@@ -91,8 +91,31 @@ class ui():
 
         self.images.icon()
 
+        # Initialise text.
+        self.text = text(self.main_window)
+
+        self.text.title()
+
         self.main_window.show()
         sys.exit(self.main_app.exec())
+
+class text():
+    def __init__(self, main_window: MainWindow) -> None:
+        self.main_window = main_window
+
+        QFontDatabase.addApplicationFont(assets.fonts.inpin)
+    
+    def title(self):
+        font = QFont("inpin", 18)
+        font.setBold(True)
+
+        label = QLabel(self.main_window)
+        label.setFont(font)
+        label.setText("ZZZ Mod Generator")
+
+        label.resize(QSize(250, 30))
+
+        label.move(100, 35)
 
 class images():
     def __init__(self, main_window: MainWindow) -> None:

@@ -9,6 +9,9 @@ class assetConfig:
         # Images
         self.images = images()
 
+        # Fonts
+        self.fonts = fonts()
+
 ### BUTTONS
 class buttons:
     def __init__(self) -> None:
@@ -30,3 +33,8 @@ class images:
     def __init__(self) -> None:
         self.background = f"{ASSET_PATH}\\images\\background.png"
         self.icon = f"{ASSET_PATH}\\images\\icon.png"
+
+### FONTS
+class fonts:
+    def __init__(self) -> None:
+        self.inpin = f"{ASSET_PATH}\\fonts\\inpin.ttf"

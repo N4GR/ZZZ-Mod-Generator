@@ -80,14 +80,37 @@ class ui():
         self.main_app = QApplication(sys.argv)
         self.main_window = MainWindow()
     
-        # Initialise buttons
+        # Initialise buttons.
         self.buttons = buttons(self.main_window)
 
         self.buttons.exitButton()
         self.buttons.minimiseButton()
 
+        # Initialise images.
+        self.images = images(self.main_window)
+
+        self.images.icon()
+
         self.main_window.show()
         sys.exit(self.main_app.exec())
+
+class images():
+    def __init__(self, main_window: MainWindow) -> None:
+        self.main_window = main_window
+    
+    def icon(self):
+        label = QtWidgets.QLabel(self.main_window)
+        image = QtGui.QPixmap(assets.images.icon)
+
+        image = image.scaled(
+            QtCore.QSize(64, 64),
+            QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+            QtCore.Qt.TransformationMode.SmoothTransformation
+        )
+        label.resize(QtCore.QSize(64, 64))
+        label.setPixmap(image)
+
+        label.move(20, 20)
 
 class buttons():
     def __init__(self, main_window: MainWindow) -> None:

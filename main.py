@@ -1,7 +1,7 @@
 import sys, ctypes
 from screeninfo import get_monitors
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea, QWidget, QHBoxLayout, QGridLayout
 from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
 from PyQt6.QtCore import QSize, Qt
 
@@ -44,12 +44,12 @@ class MainWindow(QMainWindow):
         self.setFixedSize(window.width, window.height)
         self.setWindowTitle(window.title)
 
-        self.setWindowIcon(QIcon(assets.images.icon))
+        self.setWindowIcon(QIcon(QPixmap.fromImage(assets.images.icon)))
 
         label = QLabel(self)
-        label.setPixmap(QPixmap(assets.images.background))
+        label.setPixmap(QPixmap.fromImage(assets.images.background))
         self.setCentralWidget(label)
-        self.resize(window.width, window.height)
+        #self.resize(window.width, window.height)
 
         self.setStyleSheet(r"QMainWindow {background: transparent}")
         
@@ -97,6 +97,9 @@ class ui():
 
         self.text.title()
 
+        # Initialise scroll area
+        self.scroll = scroll(self.main_window)
+
         self.main_window.show()
         sys.exit(self.main_app.exec())
 
@@ -124,7 +127,7 @@ class images():
     
     def icon(self):
         label = QLabel(self.main_window)
-        image = QPixmap(assets.images.icon)
+        image = QPixmap.fromImage(assets.images.icon)
 
         image = image.scaled(
             QSize(64, 64),
@@ -145,23 +148,23 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(assets.buttons.exit.down))
+            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(assets.buttons.exit.up))
+            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.up)))
 
         # Creating button widget
         button = QPushButton("", self.main_window)
-        button.clicked.connect(lambda: buttonFunctions.exitButton(button))
+        button.clicked.connect(buttonFunctions.exitButton)
         button.pressed.connect(pressed)
         button.released.connect(released)
         button.setGeometry(690, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(assets.buttons.exit.up))
+        button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -174,13 +177,13 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(assets.buttons.minimise.down))
+            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(assets.buttons.minimise.up))
+            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.up)))
 
         # Creating button widget
         button = QPushButton("", self.main_window)
@@ -190,7 +193,7 @@ class buttons():
         button.setGeometry(600, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(assets.buttons.minimise.up))
+        button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -199,7 +202,7 @@ class buttons():
         return button
 
 class buttonFunctions:
-    def exitButton(button: QPushButton):
+    def exitButton():
         sys.exit()
     
     def minimiseButton(button: QPushButton, window: MainWindow):

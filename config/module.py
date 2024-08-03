@@ -18,6 +18,7 @@ class getModules():
             function_name:  str name of function
             thumbnail:      bytes image of thumbnail
             description:    str description of module
+            data:           any data for module to use
         '''
 
         self.connection.close()
@@ -32,7 +33,8 @@ class getModules():
                 "name": module[1],
                 "function_name": module[2],
                 "thumbnail": module[3],
-                "description": module[4]
+                "description": module[4],
+                "data": module[5]
             })
         
         return x
@@ -52,7 +54,26 @@ class modulesConfig():
             function_name:  str name of function
             thumbnail:      bytes image of thumbnail
             description:    str description of module
+            data:           any data for module to use
         """
+
+class moduleOBJConstructur():
+    def __init__(self, module_dict: dict) -> None:
+        '''
+        Object constructur for the module dictionary.
+
+        Attributes:
+            name:           str name of module\n
+            function_name:  str name of function
+            thumbnail:      bytes image of thumbnail
+            description:    str description of module
+            data:           any data for module to use
+        '''
+        self.name = module_dict["name"]
+        self.function_name = module_dict["function_name"]
+        self.thumnail = module_dict["thumbnail"]
+        self.description = module_dict["description"]
+        self.data = module_dict["data"]
 
 from PyQt6.QtWidgets import QMainWindow
 

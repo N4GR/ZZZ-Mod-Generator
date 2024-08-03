@@ -9,6 +9,7 @@ from config.window import windowConfig
 from config.assets import assetConfig
 from config.module import modulesConfig
 from config.module import moduleFunctions
+from config.module import moduleOBJConstructur
 
 import io
 from PIL.ImageQt import ImageQt
@@ -172,13 +173,15 @@ class scroll():
                 if loop_count > mods_count:
                     return
                 
+                module = moduleOBJConstructur(mods[loop_count - 1])
+                
                 font = QFont("inpin", 12)
 
                 button = QToolButton()
                 button.setFont(font)
-                button.setText(mods[loop_count - 1]["name"])
+                button.setText({module.name})
                 button.setFixedSize(150, 200)
-                button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(mods[loop_count - 1]["thumbnail"]))))))
+                button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(module.thumnail))))))
                 button.setIconSize(QSize(124, 124))
                 button.setStyleSheet("""
                     QPushButton {
@@ -191,7 +194,7 @@ class scroll():
 
                 ### Adds action to the button
                 # Obtains the function using name and assigns it to button
-                func = getattr(moduleFunctions, mods[loop_count - 1]["function_name"])
+                func = getattr(moduleFunctions, module.function_name)
                 button.clicked.connect(lambda: func(self.main_window))
 
                 # Make button hide scrollArea when clicked

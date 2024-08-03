@@ -187,7 +187,7 @@ class buttons():
 
         # Creating button widget
         button = QPushButton("", self.main_window)
-        button.clicked.connect(lambda: buttonFunctions.minimiseButton(button, self.main_window))
+        button.clicked.connect(lambda: buttonFunctions.minimiseButton(self.main_window))
         button.pressed.connect(pressed)
         button.released.connect(released)
         button.setGeometry(600, 30, 80, 52)
@@ -205,7 +205,7 @@ class buttonFunctions:
     def exitButton():
         sys.exit()
     
-    def minimiseButton(button: QPushButton, window: MainWindow):
+    def minimiseButton(window: MainWindow):
         window.showMinimized()
 
 

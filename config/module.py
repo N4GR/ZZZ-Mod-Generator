@@ -57,6 +57,14 @@ class modulesConfig():
 from PyQt6.QtWidgets import QMainWindow
 
 import modules.boxArt
+import modules.posterArt
+import modules.magazineArt
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
         modules.boxArt.boxArt(main_window)
+    
+    def posterArt(main_window: QMainWindow):
+        modules.posterArt.posterArt(main_window)
+    
+    def magazineArt(main_window: QMainWindow):
+        modules.magazineArt.magazineArt(main_window)

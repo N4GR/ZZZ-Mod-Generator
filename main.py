@@ -7,8 +7,8 @@ from PyQt6.QtCore import QSize, Qt
 
 from config.window import windowConfig
 from config.assets import assetConfig
-from config.modules import modulesConfig
-from config.modules import moduleFunctions
+from config.module import modulesConfig
+from config.module import moduleFunctions
 
 import io
 from PIL.ImageQt import ImageQt

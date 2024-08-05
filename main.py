@@ -179,7 +179,7 @@ class scroll():
 
                 button = QToolButton()
                 button.setFont(font)
-                button.setText({module.name})
+                button.setText(module.name)
                 button.setFixedSize(150, 200)
                 button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(module.thumnail))))))
                 button.setIconSize(QSize(124, 124))

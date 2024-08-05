@@ -1,15 +1,9 @@
-from PyQt6.QtWidgets import QWidget, QScrollArea, QGridLayout, QMainWindow, QToolButton
-from PyQt6.QtGui import QFont, QPixmap, QIcon
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtWidgets import QWidget, QScrollArea, QGridLayout, QMainWindow
+from PyQt6.QtCore import Qt
 
 from config.window import windowConfig
 from config.module import modulesConfig
-import config.module
-
-from PIL import Image
-from PIL.ImageQt import ImageQt
-
-import io
+from generator.objects import Module, N4QToolButton
 
 import math
 
@@ -43,6 +37,16 @@ class scrollArea():
     def getGridLayout(self):
         return self.grid_layout
 
+class addToScrollArea():
+    def __init__(self, main_window: QMainWindow, grid_layout: QGridLayout, items: list[object]) -> None:
+        self.grid_layout = grid_layout
+                
+    def buttons(self):
+        pass
+
+    def images(self):
+        pass
+
 class addItems():
     def __init__(self, main_window: QMainWindow, grid_layout: QGridLayout) -> None:
         '''
@@ -67,28 +71,7 @@ class addItems():
                 if loop_count > mods_count:
                     return
                 
-                module = config.module.moduleOBJConstructur(modules_list[loop_count - 1])
-                
-                font = QFont("inpin", 12)
-
-                button = QToolButton()
-                button.setFont(font)
-                button.setText(module.name)
-                button.setFixedSize(150, 200)
-                button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(module.thumbnail))))))
-                button.setIconSize(QSize(124, 124))
-                button.setStyleSheet("""
-                    QPushButton {
-                        background-color: transparent;
-                        border: 0px;
-                    }
-                """)
-
-                button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
-
-                ### Adds action to the button
-                # Obtains the function using name and assigns it to button
-                func = getattr(config.module.moduleFunctions, module.function_name)
-                button.clicked.connect(lambda: func(main_window))
+                module = Module(modules_list[loop_count - 1])
+                button = N4QToolButton(module.name, module.thumbnail)
 
                 grid_layout.addWidget(button, row, col)

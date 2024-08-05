@@ -1,21 +1,12 @@
 import sys, ctypes
 from screeninfo import get_monitors
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea, QWidget, QGridLayout, QToolButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea
 from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
 from PyQt6.QtCore import QSize, Qt
 
 from config.window import windowConfig
 from config.assets import assetConfig
-from config.module import modulesConfig
-from config.module import moduleFunctions
-from config.module import moduleOBJConstructur
-
-import io
-from PIL.ImageQt import ImageQt
-from PIL import Image
-
-import math
 
 from generator.scroll_area import scrollArea, addItems
 

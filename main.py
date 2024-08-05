@@ -1,7 +1,7 @@
 import sys, ctypes
 from screeninfo import get_monitors
 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea, QWidget, QHBoxLayout, QGridLayout, QToolButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea, QWidget, QGridLayout, QToolButton
 from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
 from PyQt6.QtCore import QSize, Qt
 

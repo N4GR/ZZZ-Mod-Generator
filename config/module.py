@@ -1,61 +1,57 @@
 import sqlite3
 
-class getModules():
-    def __init__(self) -> None:
-        '''Creates a dictionary of dictionaries containing image data.
-
-        Attributes:
-            images: list of image data
-        '''
-        self.connection = sqlite3.connect("config\\data.sqlite")
-        self.cursor = self.connection.cursor()
-
-        self.modules = self.makeModules()
-        '''list: a list of image data
-        
-        Attributes:
-            name:           str name of module\n
-            function_name:  str name of function
-            thumbnail:      bytes image of thumbnail
-            description:    str description of module
-            data:           any data for module to use
-        '''
-
-        self.connection.close()
-
-    def makeModules(self):
-        modules = self.cursor.execute("SELECT * FROM modules").fetchall()
-
-        x = []
-
-        for module in modules:
-            x.append({
-                "name": module[1],
-                "function_name": module[2],
-                "thumbnail": module[3],
-                "description": module[4],
-                "data": module[5]
-            })
-        
-        return x
-
 class modulesConfig():
     def __init__(self) -> None:
-        '''Creates a list of module dictionaries
+        '''Creates a list of module objects
 
         Attributes:
-            list: A list of module dictionaries.
+            list: A list of module objects.
         '''
-        self.list = getModules().modules
+        self.list = self.getModules()
         """list: list of module objects
         
         Attributes:
-            name:           str name of module\n
+            type:           str type of object\n
+            name:           str name of module
             function_name:  str name of function
             thumbnail:      bytes image of thumbnail
             description:    str description of module
             data:           any data for module to use
         """
+
+    def getModules(self):
+        self.connection = sqlite3.connect("config\\data.sqlite")
+        self.cursor = self.connection.cursor()
+
+        modules = self.cursor.execute("SELECT * FROM modules").fetchall()
+        self.connection.close()
+
+        mods = []
+
+        for module in modules:
+            mods.append(moduleObject(module))
+        
+        return mods
+
+class moduleObject():
+    def __init__(self, module) -> None:
+        '''
+        Object constructur for the module dictionary.
+
+        Attributes:
+            name:           str name of module\n
+            function_name:  str name of function
+            thumbnail:      bytes image of thumbnail
+            description:    str description of module
+            data:           any data for module to use
+        '''
+        self.type = "module"
+        self.name =  module[1]
+        self.function_name = module[2]
+        self.thumbnail = module[3]
+        self.description = module[4]
+        self.data = module[5]
+
 
 from PyQt6.QtWidgets import QMainWindow
 

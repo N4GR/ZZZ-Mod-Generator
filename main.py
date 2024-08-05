@@ -7,8 +7,9 @@ from PyQt6.QtCore import QSize, Qt
 
 from config.window import windowConfig
 from config.assets import assetConfig
+from config.module import modulesConfig
 
-from generator.scroll_area import scrollArea, addItems
+from generator.scroll_area import scrollArea, addToScrollArea
 
 class getMonitors:
     def __init__(self) -> None:
@@ -102,8 +103,7 @@ class ui():
         # Initialise scroll area
         #self.scroll = scroll(self.main_window).getScrollArea()
         scroll = scrollArea(self.main_window)
-        grid_layout = scroll.getGridLayout()
-        addItems(self.main_window, grid_layout)
+        addToScrollArea(scroll.getGridLayout(), self.main_window, modulesConfig().list)
 
         # Initialise buttons.
         self.buttons = buttons(self.main_window)

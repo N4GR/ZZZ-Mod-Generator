@@ -1,11 +1,35 @@
-from PyQt6.QtWidgets import QWidget, QScrollArea, QGridLayout, QMainWindow
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QScrollArea, QGridLayout, QMainWindow, QToolButton
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QPixmap, QIcon, QFont
+
+from PIL.ImageQt import ImageQt
+from PIL import Image
 
 from config.window import windowConfig
-from config.module import modulesConfig
-from generator.objects import Module, N4QToolButton
-
 import math
+import io
+
+from config.module import moduleFunctions
+
+class N4QToolButton(QToolButton):
+    def __init__(self, button_name: str, button_icon: bytes) -> None:
+        super(N4QToolButton, self).__init__()
+
+        font = QFont("inpin", 12)
+
+        self.setFont(font)
+        self.setText(button_name)
+        self.setFixedSize(150, 200)
+        self.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(button_icon))))))
+        self.setIconSize(QSize(124, 124))
+        self.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: 0px;
+            }
+        """)
+
+        self.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
 
 class scrollArea():
     def __init__(self, main_window: QMainWindow) -> None:
@@ -38,40 +62,38 @@ class scrollArea():
         return self.grid_layout
 
 class addToScrollArea():
-    def __init__(self, main_window: QMainWindow, grid_layout: QGridLayout, items: list[object]) -> None:
+    def __init__(self, grid_layout: QGridLayout, main_window: QMainWindow, items: list[object]) -> None:
+        '''Adds items to the scroll area from a list of objects
+
+        Requirements:
+            grid_layout: QGridLayout
+            items: list[object]; object must contain 'type', 'name', 'thumbnail'
+        '''
         self.grid_layout = grid_layout
-                
-    def buttons(self):
-        pass
+        self.items = items
+        self.item_count = len(self.items)
 
-    def images(self):
-        pass
-
-class addItems():
-    def __init__(self, main_window: QMainWindow, grid_layout: QGridLayout) -> None:
-        '''
-        Adds items to the scrollable region with a grid layout and an actions list.
-        The button actions will be grabbed form the list in sequential order.
-
-        actions = list[Object] : List of action objects
-        '''
-        # Create module object list
-        modules_list = modulesConfig().list
-        mods_count = len(modules_list)
-        # Calculate number of rows needed in grid
-        row_count = int(math.ceil(mods_count / 4))
-        # Number of columns to have on one row; 4 is sufficient.
-        column_count = 4
+        self.row_count = int(math.ceil(self.item_count / 4))
+        self.column_count = 4
 
         loop_count = 0
-        # Add buttons to the grid layout
-        for row in range(row_count):
-            for col in range(column_count):
+        # For every row, add a column which is a widget but don't add more columns than there is items.
+        for row in range(self.row_count):
+            for col in range(self.column_count):
                 loop_count += 1
-                if loop_count > mods_count:
+                if loop_count > self.item_count:
                     return
                 
-                module = Module(modules_list[loop_count - 1])
-                button = N4QToolButton(module.name, module.thumbnail)
+                item = self.items[loop_count - 1]
 
-                grid_layout.addWidget(button, row, col)
+                # Modules on the main menu are buttons
+                if item.type == "module":
+                    widget = N4QToolButton(item.name, item.thumbnail)
+                    func = getattr(moduleFunctions, item.function_name)
+                    widget.clicked.connect(lambda: func(main_window))
+                
+                # If they're trying to add an image, do this
+                if item.type == "image":
+                    widget = None
+                
+                grid_layout.addWidget(widget, row, col)

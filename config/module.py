@@ -71,7 +71,7 @@ class moduleOBJConstructur():
         '''
         self.name = module_dict["name"]
         self.function_name = module_dict["function_name"]
-        self.thumnail = module_dict["thumbnail"]
+        self.thumbnail = module_dict["thumbnail"]
         self.description = module_dict["description"]
         self.data = module_dict["data"]
 

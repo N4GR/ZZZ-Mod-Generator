@@ -1,5 +1,4 @@
 import sys, ctypes
-from screeninfo import get_monitors
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea
 from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
@@ -11,38 +10,9 @@ from config.module import modulesConfig
 
 import generator.scroll_area
 
-class getMonitors:
-    def __init__(self) -> None:
-        self.monitors = self.getMonitors()
-        self.main_monitor = self.getMainMonitor()
-    
-    def getMonitors(self) -> list[object]:
-        '''
-        A function to return a list of the current monitors.
-
-        -> list[obj] = Objects of monitors
-        '''
-        monitors = []
-        for m in get_monitors():
-            monitors.append(m)
-
-        return monitors
-
-    def getMainMonitor(self) -> object:
-        '''
-        A function to get the main monitor from the monitors object list.
-
-        -> object = Object of main monitor.
-        '''
-
-        for m in self.monitors:
-            if m.is_primary is True: return m
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-
-        self.monitors = getMonitors()
 
         self.setFixedSize(WINDOW.width, WINDOW.height)
         self.setWindowTitle(WINDOW.title)

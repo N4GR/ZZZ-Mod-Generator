@@ -59,8 +59,6 @@ class ui():
         self.main_app = QApplication(sys.argv)
         self.main_window = MainWindow()
 
-        # Initialise images.
-        self.images = images(self.main_window)
 
         # Initialise text.
         self.text = text(self.main_window)
@@ -99,33 +97,6 @@ class text():
         label.resize(QSize(250, 30))
 
         label.move(100, 35)
-
-        return label
-
-class images():
-    def __init__(self, main_window: MainWindow) -> None:
-        '''Images class containing and initilising all images related to the main ui.
-        
-        Attributes:
-            icon[QLabel]: Icon of the main UI.
-        '''
-        self.main_window = main_window
-
-        self.icon = self.iconLabel()
-
-    def iconLabel(self):
-        label = QLabel(self.main_window)
-        image = QPixmap.fromImage(ASSETS.images.icon.image)
-
-        image = image.scaled(
-            QSize(64, 64),
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation
-        )
-        label.resize(QSize(64, 64))
-        label.setPixmap(image)
-
-        label.move(20, 20)
 
         return label
 

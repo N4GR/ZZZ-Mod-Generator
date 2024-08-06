@@ -1,6 +1,7 @@
 import sys, ctypes
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QScrollArea
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
 from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtCore import QSize, Qt, QPoint

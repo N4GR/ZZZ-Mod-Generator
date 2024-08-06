@@ -9,7 +9,7 @@ from config.window import windowConfig
 import math
 import io
 
-from config.module import moduleFunctions
+import config.module
 
 class N4QToolButton(QToolButton):
     def __init__(self, button_name: str, button_icon: bytes) -> None:
@@ -57,19 +57,16 @@ class scrollArea():
 
         self.scroll_area.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.scroll_area.setStyleSheet("background-color: transparent; border: 0px")
-    
-    def getGridLayout(self):
-        return self.grid_layout
 
 class addToScrollArea():
-    def __init__(self, grid_layout: QGridLayout, main_window: QMainWindow, items: list[object]) -> None:
+    def __init__(self, grid_layout: QGridLayout, scroll_area: QScrollArea, main_window: QMainWindow, items: list[object]) -> None:
         '''Adds items to the scroll area from a list of objects
 
         Requirements:
             grid_layout: QGridLayout
             items: list[object]; object must contain 'type', 'name', 'thumbnail'
         '''
-        self.grid_layout = grid_layout
+
         self.items = items
         self.item_count = len(self.items)
 
@@ -89,11 +86,15 @@ class addToScrollArea():
                 # Modules on the main menu are buttons
                 if item.type == "module":
                     widget = N4QToolButton(item.name, item.thumbnail)
-                    func = getattr(moduleFunctions, item.function_name)
-                    widget.clicked.connect(lambda: func(main_window))
+                    func = getattr(config.module.moduleFunctions, item.function_name)
+                    widget.clicked.connect(lambda checked=False, f=func, mw=main_window: f(mw))
+                    widget.clicked.connect(lambda: removeScrollArea(scroll_area))
                 
                 # If they're trying to add an image, do this
                 if item.type == "image":
                     widget = None
                 
                 grid_layout.addWidget(widget, row, col)
+
+def removeScrollArea(scroll_area: QScrollArea):
+    scroll_area.setParent(None)

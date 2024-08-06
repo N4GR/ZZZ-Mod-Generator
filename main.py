@@ -9,7 +9,7 @@ from config.window import windowConfig
 from config.assets import assetConfig
 from config.module import modulesConfig
 
-from generator.scroll_area import scrollArea, addToScrollArea
+import generator.scroll_area
 
 class getMonitors:
     def __init__(self) -> None:
@@ -44,15 +44,14 @@ class MainWindow(QMainWindow):
 
         self.monitors = getMonitors()
 
-        self.setFixedSize(window.width, window.height)
-        self.setWindowTitle(window.title)
+        self.setFixedSize(WINDOW.width, WINDOW.height)
+        self.setWindowTitle(WINDOW.title)
 
-        self.setWindowIcon(QIcon(QPixmap.fromImage(assets.images.icon)))
+        self.setWindowIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon)))
 
         label = QLabel(self)
-        label.setPixmap(QPixmap.fromImage(assets.images.background))
+        label.setPixmap(QPixmap.fromImage(ASSETS.images.background))
         self.setCentralWidget(label)
-        #self.resize(window.width, window.height)
 
         self.setStyleSheet(r"QMainWindow {background: transparent}")
         
@@ -93,23 +92,16 @@ class ui():
         # Initialise images.
         self.images = images(self.main_window)
 
-        self.images.icon()
-
         # Initialise text.
         self.text = text(self.main_window)
 
-        self.text.title()
-
         # Initialise scroll area
         #self.scroll = scroll(self.main_window).getScrollArea()
-        scroll = scrollArea(self.main_window)
-        addToScrollArea(scroll.getGridLayout(), self.main_window, modulesConfig().list)
+        scroll = generator.scroll_area.scrollArea(self.main_window)
+        generator.scroll_area.addToScrollArea(scroll.grid_layout, scroll.scroll_area, self.main_window, modulesConfig().list)
 
         # Initialise buttons.
         self.buttons = buttons(self.main_window)
-
-        self.buttons.exitButton()
-        self.buttons.minimiseButton()
 
         self.main_window.show()
         sys.exit(self.main_app.exec())
@@ -118,9 +110,11 @@ class text():
     def __init__(self, main_window: MainWindow) -> None:
         self.main_window = main_window
 
-        QFontDatabase.addApplicationFont(assets.fonts.inpin)
+        QFontDatabase.addApplicationFont(ASSETS.fonts.inpin)
+        
+        self.title = self.titleText()
     
-    def title(self):
+    def titleText(self):
         font = QFont("inpin", 18)
         font.setBold(True)
 
@@ -132,13 +126,17 @@ class text():
 
         label.move(100, 35)
 
+        return label
+
 class images():
     def __init__(self, main_window: MainWindow) -> None:
         self.main_window = main_window
-    
-    def icon(self):
+
+        self.icon = self.iconLabel()
+
+    def iconLabel(self):
         label = QLabel(self.main_window)
-        image = QPixmap.fromImage(assets.images.icon)
+        image = QPixmap.fromImage(ASSETS.images.icon)
 
         image = image.scaled(
             QSize(64, 64),
@@ -150,32 +148,40 @@ class images():
 
         label.move(20, 20)
 
+        return label
+
 class buttons():
     def __init__(self, main_window: MainWindow) -> None:
         self.main_window = main_window
+
+        self.exit = self.exitButton()
+        self.minimise = self.minimiseButton()
         
     def exitButton(self) -> QPushButton:
         def pressed():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.down)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.up)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up)))
+        
+        def func():
+            sys.exit()
 
         # Creating button widget
         button = QPushButton("", self.main_window)
-        button.clicked.connect(buttonFunctions.exitButton)
+        button.clicked.connect(func)
         button.pressed.connect(pressed)
         button.released.connect(released)
         button.setGeometry(690, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.exit.up)))
+        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -188,23 +194,26 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.down)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.up)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up)))
+        
+        def func():
+            self.main_window.showMinimized()
 
         # Creating button widget
         button = QPushButton("", self.main_window)
-        button.clicked.connect(lambda: buttonFunctions.minimiseButton(self.main_window))
+        button.clicked.connect(func)
         button.pressed.connect(pressed)
         button.released.connect(released)
         button.setGeometry(600, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(assets.buttons.minimise.up)))
+        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -212,20 +221,10 @@ class buttons():
 
         return button
 
-class buttonFunctions:
-    def exitButton():
-        sys.exit()
-    
-    def minimiseButton(window: MainWindow):
-        window.showMinimized()
-    
-    def removeScrollArea(scrollArea: QScrollArea):
-        scrollArea.setParent(None)
-
 if __name__ == "__main__":
-    assets = assetConfig()
-    window = windowConfig()
+    ASSETS = assetConfig()
+    WINDOW = windowConfig()
 
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(window.app_id)
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(WINDOW.app_id)
 
     ui()

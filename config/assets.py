@@ -67,19 +67,24 @@ class buttons:
 
 class exit:
     def __init__(self) -> None:
-        self.up = ImageQt(Image.open(io.BytesIO(img["exit_up"]["image"])))
-        self.down = ImageQt(Image.open(io.BytesIO(img["exit_down"]["image"])))
+        self.up = image(img["exit_up"]["image"])
+        self.down = image(img["exit_down"]["image"])
 
 class minimise:
     def __init__(self) -> None:
-        self.up = ImageQt(Image.open(io.BytesIO(img["minimise_up"]["image"])))
-        self.down = ImageQt(Image.open(io.BytesIO(img["minimise_down"]["image"])))
+        self.up = image(img["minimise_up"]["image"])
+        self.down = image(img["minimise_down"]["image"])
 
 ### IMAGES
 class images:
     def __init__(self) -> None:
-        self.background = ImageQt(Image.open(io.BytesIO(img["background"]["image"])))
-        self.icon = ImageQt(Image.open(io.BytesIO(img["icon"]["image"])))
+        self.background = image(img["background"]["image"])
+        self.icon = image(img["icon"]["image"])
+
+class image:
+    def __init__(self, image_bytes: bytes) -> None:
+        self.bytes = image_bytes
+        self.image = ImageQt(Image.open(io.BytesIO(image_bytes)))
 
 ### FONTS
 class fonts:

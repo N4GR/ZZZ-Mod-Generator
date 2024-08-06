@@ -33,11 +33,17 @@ class N4QToolButton(QToolButton):
 
 class scrollArea():
     def __init__(self, main_window: QMainWindow) -> None:
+        '''scrollArea class generator for creating scrollable areas within the main UI.
+
+        Attributes:
+            scroll_area [QScrollArea]: The scroll area being generated.
+            grid_layout [QGridLayout]: The grid layout being used inside the scroll area.
+        '''
         window = windowConfig()
         self.main_window = main_window
+
         # Create a scroll area
         self.scroll_area = QScrollArea(self.main_window)
-        #self.scroll_area.setParent(None)
 
         # Create a widget to hold the grid layout
         container = QWidget()
@@ -64,7 +70,12 @@ class addToScrollArea():
 
         Requirements:
             grid_layout: QGridLayout
-            items: list[object]; object must contain 'type', 'name', 'thumbnail'
+            items list[object]: object must contain 'type', 'name', 'thumbnail'
+        
+        Attributes:
+            item_count [int]: count of items being given.
+            row_count [int]: count of rows being used.
+            column_count [int]: count of columns being used. 
         '''
 
         self.items = items
@@ -97,4 +108,5 @@ class addToScrollArea():
                 grid_layout.addWidget(widget, row, col)
 
 def removeScrollArea(scroll_area: QScrollArea):
+    '''removeScrollArea function to remove a scroll area.'''
     scroll_area.setParent(None)

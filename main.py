@@ -47,10 +47,10 @@ class MainWindow(QMainWindow):
         self.setFixedSize(WINDOW.width, WINDOW.height)
         self.setWindowTitle(WINDOW.title)
 
-        self.setWindowIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon)))
+        self.setWindowIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon.image)))
 
         label = QLabel(self)
-        label.setPixmap(QPixmap.fromImage(ASSETS.images.background))
+        label.setPixmap(QPixmap.fromImage(ASSETS.images.background.image))
         self.setCentralWidget(label)
 
         self.setStyleSheet(r"QMainWindow {background: transparent}")
@@ -96,7 +96,6 @@ class ui():
         self.text = text(self.main_window)
 
         # Initialise scroll area
-        #self.scroll = scroll(self.main_window).getScrollArea()
         scroll = generator.scroll_area.scrollArea(self.main_window)
         generator.scroll_area.addToScrollArea(scroll.grid_layout, scroll.scroll_area, self.main_window, modulesConfig().list)
 
@@ -108,6 +107,11 @@ class ui():
 
 class text():
     def __init__(self, main_window: MainWindow) -> None:
+        '''Text class containing and initilising all text related to the main ui.
+        
+        Attributes:
+            title [QLabel]: Title of the main UI.
+        '''
         self.main_window = main_window
 
         QFontDatabase.addApplicationFont(ASSETS.fonts.inpin)
@@ -130,13 +134,18 @@ class text():
 
 class images():
     def __init__(self, main_window: MainWindow) -> None:
+        '''Images class containing and initilising all images related to the main ui.
+        
+        Attributes:
+            icon[QLabel]: Icon of the main UI.
+        '''
         self.main_window = main_window
 
         self.icon = self.iconLabel()
 
     def iconLabel(self):
         label = QLabel(self.main_window)
-        image = QPixmap.fromImage(ASSETS.images.icon)
+        image = QPixmap.fromImage(ASSETS.images.icon.image)
 
         image = image.scaled(
             QSize(64, 64),
@@ -152,6 +161,12 @@ class images():
 
 class buttons():
     def __init__(self, main_window: MainWindow) -> None:
+        '''Buttons class containing and initilising all buttons related to the main ui.
+        
+        Attributes:
+            exit [QPushButton]: Exit push button of the main UI.
+            minimise [QPushButton]: Minimise push button of the main UI.
+        '''
         self.main_window = main_window
 
         self.exit = self.exitButton()
@@ -162,13 +177,13 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.down)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.down.image)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up.image)))
         
         def func():
             sys.exit()
@@ -181,7 +196,7 @@ class buttons():
         button.setGeometry(690, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up)))
+        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up.image)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -194,13 +209,13 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.down)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.down.image)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up)))
+            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up.image)))
         
         def func():
             self.main_window.showMinimized()
@@ -213,7 +228,7 @@ class buttons():
         button.setGeometry(600, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up)))
+        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up.image)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling

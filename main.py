@@ -55,10 +55,21 @@ class MainWindow(QMainWindow):
         super().mouseReleaseEvent(event)
 
 class ui():
-    def __init__(self) -> None:
-        self.main_app = QApplication(sys.argv)
+    def __init__(self, new: bool = True, position: QPoint = None) -> None:
+        '''Main menu creation class for the main UI which can be re-created.
+
+        Parameters:
+            new [bool] = True: if True, will create an Application - if False, will not.
+            position [QPoint] = None: if None, and new is False, will fail - QPoint of previous main window.
+
+        Usage:
+            ui(new = False): This will re-create the main UI without closing the Application.
+        '''
+        if new is True: self.main_app = self.createApp()
+        
         self.main_window = MainWindow()
 
+        if new is False: self.main_window.move(position)
 
         # Initialise text.
         self.text = text(self.main_window)
@@ -71,6 +82,15 @@ class ui():
         self.buttons = buttons(self.main_window)
 
         self.main_window.show()
+
+        if new is True: self.createExit()
+    
+    def createApp(self) -> QApplication:
+        main_app = QApplication(sys.argv)
+
+        return main_app
+    
+    def createExit(self):
         sys.exit(self.main_app.exec())
 
 class text():
@@ -112,6 +132,7 @@ class buttons():
 
         self.exit = self.exitButton()
         self.minimise = self.minimiseButton()
+        self.home = self.homeButton()
         
     def exitButton(self) -> QPushButton:
         def pressed():
@@ -171,6 +192,35 @@ class buttons():
         # Setting icon
         button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up.image)))
         button.setIconSize(QSize(80, 52))
+
+        # Object styling handling
+        button.setStyleSheet("QPushButton {background-color: transparent; border: 0px}")
+
+        return button
+
+    def homeButton(self) -> QPushButton:
+        def pressed():
+            button.setGeometry(22, 22, 60, 60)
+            button.setIconSize(QSize(60, 60))
+        
+        def released():
+            button.setGeometry(20, 20, 64, 64)
+            button.setIconSize(QSize(64, 64))
+
+        def func():
+            self.main_window.deleteLater()
+            ui(new = False, position = self.main_window.pos())
+
+        # Creating button widget
+        button = QPushButton("", self.main_window)
+        button.clicked.connect(func)
+        button.pressed.connect(pressed)
+        button.released.connect(released)
+        button.setGeometry(20, 20, 64, 64)
+
+        # Setting icon
+        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon.image)))
+        button.setIconSize(QSize(64, 64))
 
         # Object styling handling
         button.setStyleSheet("QPushButton {background-color: transparent; border: 0px}")

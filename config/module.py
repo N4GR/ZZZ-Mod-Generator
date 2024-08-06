@@ -55,15 +55,15 @@ class moduleObject():
 
 from PyQt6.QtWidgets import QMainWindow
 
-import modules.boxArt
-import modules.posterArt
-import modules.magazineArt
+import modules.boxArt.init
+import modules.posterArt.init
+import modules.magazineArt.init
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
-        modules.boxArt.boxArt(main_window)
+        modules.boxArt.init.boxArt(main_window)
     
     def posterArt(main_window: QMainWindow):
-        modules.posterArt.posterArt(main_window)
+        modules.posterArt.init.posterArt(main_window)
     
     def magazineArt(main_window: QMainWindow):
-        modules.magazineArt.magazineArt(main_window)
+        modules.magazineArt.init.magazineArt(main_window)

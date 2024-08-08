@@ -12,6 +12,7 @@ class images:
 
         self.side_panel = obj.image(self.__sq.get("images", "name = 'side_panel'"))
         self.upload_button = obj.button(up = self.__sq.get("images", "name = 'upload_up'"), down = self.__sq.get("images", "name = 'upload_down'"))
+        self.start_button = obj.button(up = self.__sq.get("images", "name = 'start_up'"), down = self.__sq.get("images", "name = 'start_down'"))
 
         self.data = self.__makeImages()
 

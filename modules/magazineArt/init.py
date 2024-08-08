@@ -1,5 +1,9 @@
 from PyQt6.QtWidgets import QMainWindow
 
+from modules.base import uploading
+
 class magazineArt:
     def __init__(self, main_window: QMainWindow) -> None:
-        print("I'm working! mag")
+        base = uploading.uploading(main_window)
+
+        print("magazineArt")

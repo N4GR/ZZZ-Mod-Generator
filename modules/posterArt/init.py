@@ -1,5 +1,9 @@
 from PyQt6.QtWidgets import QMainWindow
 
-class posterArt:
+from modules.base import uploading
+
+class posterArt():
     def __init__(self, main_window: QMainWindow) -> None:
-        print("I'm working! poster")
+        base = uploading.uploading(main_window)
+
+        print("posterArt")

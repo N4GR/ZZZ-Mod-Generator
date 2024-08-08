@@ -12,7 +12,7 @@ class sql():
         self.__connection.commit()
         self.__connection.close()
     
-    def get(self, table: str, query: str = None) -> list[tuple]:
+    def get(self, table: str, query: str = None, column: str = None) -> list[tuple]:
         '''SQL get function to retrieve data from a table within the database
         
         Parameters:
@@ -25,14 +25,21 @@ class sql():
         Returns:
             list[tuple]: Data requested.
         '''
-        if query is None:
+        if query is None and column is None:
             sql_insert = f"SELECT * FROM {table}"
-        else:
+        
+        if query is not None and column is None:
             sql_insert = f"SELECT * FROM {table} WHERE {query}"
+
+        if query is not None and column is not None:
+            sql_insert = f"SELECT {column} FROM {table} WHERE {query}"
 
         fetch = self.__cursor.execute(sql_insert)
         
-        return fetch.fetchall()
+        if column is None:
+            return fetch.fetchall()
+        else:
+            return fetch.fetchone()
 
 class __SQL():
     def __init__(self) -> None:
@@ -70,7 +77,6 @@ class image():
         self.height = image_info.height
         self.width = image_info.width
         self.size = os.path.getsize(self.__image_directory)
-
 
     def __getIO(self) -> bytes:
         with open(self.__image_directory, "rb") as file:

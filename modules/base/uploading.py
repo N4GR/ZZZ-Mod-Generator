@@ -1,4 +1,3 @@
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErrorMessage
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize

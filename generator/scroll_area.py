@@ -32,21 +32,25 @@ class N4QToolButton(QToolButton):
         self.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
 
 class N4QImageWithText(QWidget):
-    def __init__(self, image_path: str, text: str) -> None:
+    def __init__(self, text: str, type: str, image_path: str = None, img: object = None) -> None:
         super(N4QImageWithText, self).__init__()
         width, height = (100, 150)
 
         # Creating image label
-        img = Image.open(image_path)
+        if type == "image":
+            img = Image.open(image_path)
 
         img.thumbnail((width, height), Image.Resampling.LANCZOS)
 
         self.image_label = QLabel(self)
         self.image_label.setPixmap(QPixmap.fromImage(ImageQt(img)))
         self.image_label.setFixedSize(width, height)
+        self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        #img.close()
 
         # Creating text label
-        if len(text) > 14: text = f"{text[:11]}..."
+        if len(text) > 13: text = f"{text[:11]}..."
         self.text_label = QLabel(self)
         font = QFont("inpin", 12)
         self.text_label.setFont(font)
@@ -120,7 +124,9 @@ class scrollArea():
                 widget.clicked.connect(makeLambda(func))
                 widget.clicked.connect(self.delete)
             if item.type == "image":
-                widget = N4QImageWithText(item.path, f"{item.name}.{item.file_type}")
+                widget = N4QImageWithText(text = f"{item.name}.{item.file_type}", type = "image", image_path = item.path)
+            if item.type == "default":
+                widget = N4QImageWithText(text = f"{item.name}", type = "default", img = item.image)
 
             self.grid_layout.addWidget(widget, self.row, self.column)
     

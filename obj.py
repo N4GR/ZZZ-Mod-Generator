@@ -1,7 +1,7 @@
 from PyQt6.QtGui import QPixmap, QIcon
 
 from PIL.ImageQt import ImageQt
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 import io
 
@@ -43,3 +43,39 @@ class scrollImages():
         self.name = x[0]
         self.type = "image"#
         self.file_type = x[1]
+
+
+class defaultImage():
+    def __init__(self, data: dict) -> None:
+        self.__data = data
+
+        self.image = self.makeImage()
+        self.name = self.__data["name"]
+        self.type = "default"
+
+    def makeImage(self):
+        width, height = self.__data["image_width"], self.__data["image_height"]
+            
+        # Creating image canvas
+        image = Image.new("RGBA", (width, height), color = (0, 0, 0))
+
+        # Creating image draw
+        draw = ImageDraw.Draw(image)
+
+        # Adding text
+        text = self.__data["name"]
+
+        text_color = (255, 255, 255)
+        font = ImageFont.load_default()
+
+        # Calculate text size and position using textbbox
+        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_width = text_bbox[2] - text_bbox[0]
+        text_height = text_bbox[3] - text_bbox[1]
+        text_x = (width - text_width) // 2
+        text_y = (height - text_height) // 2
+
+        # Draw the text
+        draw.text((text_x, text_y), text, fill = text_color, font=font)
+
+        return image

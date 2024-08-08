@@ -1,4 +1,5 @@
 import sqlite3
+import pickle
 
 class sql():
     def __init__(self) -> None:

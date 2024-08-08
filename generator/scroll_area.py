@@ -57,6 +57,8 @@ class N4QImageWithText(QWidget):
         self.text_label.setText(text)
         self.text_label.setFixedWidth(width)
 
+        if type == "default": self.text_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         # Creating layout to add the widgets to
         layout = QVBoxLayout()
         layout.addWidget(self.image_label)

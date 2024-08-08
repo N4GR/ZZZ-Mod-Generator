@@ -24,7 +24,7 @@ class uploading():
         
         # Initialising new scroll area
         self.scroll_area = scrollArea(main_window, (683, 460), 5)
-        self.scroll_area.addItems(IMAGE_ASSETS.data)
+        self.scroll_area.addItems(IMAGE_ASSETS.data, initial = True)
 
         # Initialising new buttons
         self.buttons = Buttons(main_window, self.scroll_area, image_assets = IMAGE_ASSETS)
@@ -92,6 +92,11 @@ class Buttons():
             for file in files[0]:
                 path = file.path()[1:]
 
+                # Checks if the user is trying to open too many images
+                if len(self.open_images) + 1 > opened_widgets:
+                    self.__maximum_replaced = True
+                    continue
+
                 # Check if image is corrupt
                 try:
                     img = Image.open(path)
@@ -107,7 +112,19 @@ class Buttons():
                 x.append(scroll_image)
                 self.open_images.append(scroll_image)
 
+                # Replace the item in opened images assets
+                self.__image_assets.data[len(self.open_images) - 1] = obj.addingImage(path)
+
+            print(self.__image_assets.data)
+
+            if self.__maximum_replaced is True:
+                error_message = QErrorMessage(self.__main_window)
+                error_message.setWindowTitle("Maximum Images")
+                error_message.showMessage(f"Only {opened_widgets} images can be used, the rest have been skipped.")
+                error_message.exec()
+
             if failed != []:
+                print("Here!")
                 failed_lst = [f"{x}\n" for x in failed]
                 failed_str = "".join(failed_lst)
 
@@ -118,6 +135,12 @@ class Buttons():
 
             if x != []:
                 self.__scroll_area.addItems(x)
+
+        # Booleon to check if maximum images have been replaced.
+        self.__maximum_replaced = False
+
+        # Obtains the amount of widgets created when the main file is initialised.
+        opened_widgets = len(self.__image_assets.data)
 
         button = QPushButton(self.__main_window)
         button.setText("")

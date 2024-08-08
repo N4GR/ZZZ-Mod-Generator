@@ -75,7 +75,7 @@ class N4QImageWithText(QWidget):
         self.setLayout(layout)
 
 class scrollArea():
-    def __init__(self, main_window: QMainWindow, size: tuple[int] = None, max_column: int = 4) -> None:
+    def __init__(self, main_window: QMainWindow, size: tuple[int] = (790, 460), max_column: int = 4) -> None:
         '''scrollArea class generator for creating scrollable areas within the main UI.
 
         Parameters:
@@ -90,8 +90,6 @@ class scrollArea():
             column [int]: The current column the scroll area is on. 7
         '''
         self.main_window = main_window
-
-        if size == None: size = (790, 460)
 
         # Create a scroll area
         self.scroll_area = QScrollArea(main_window)
@@ -122,7 +120,7 @@ class scrollArea():
 
         self.max_column = max_column
 
-    def addItems(self, items: list[object]):
+    def addItems(self, items: list[object], initial: bool = False):
         '''Function to add items to a scroll area.
         
         Parameters:
@@ -169,10 +167,22 @@ class scrollArea():
                 widget = N4QImageWithText(text = f"{item.name}", type = "default", img = item.image)
 
             # Checks if there is any item there, deletes it if it is.
+            remove_widget = self.grid_layout.itemAtPosition(self.row, self.column)
 
+            if remove_widget is not None:
+                remove_widget = remove_widget.widget()
+
+                # Removes widget from grid
+                self.grid_layout.removeWidget(remove_widget)
+                # Completely destroys widget object
+                remove_widget.deleteLater()
 
             # Adds item to the given position
             self.grid_layout.addWidget(widget, self.row, self.column)
+
+        if initial is True:
+            self.column = 0
+            self.row = 0
     
     def delete(self):
         self.scroll_area.setParent(None)

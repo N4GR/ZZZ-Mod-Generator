@@ -29,7 +29,6 @@ class image():
         self.width = self.__data[6]
         self.size = self.__data[7]
 
-
 class button():
     def __init__(self, up: dict, down: dict) -> None:
         self.up = image(up)
@@ -44,6 +43,14 @@ class scrollImages():
         self.type = "image"#
         self.file_type = x[1]
 
+class addingImage():
+    def __init__(self, path: str) -> None:
+        x = path.split("/")[-1].split(".")
+
+        self.image = Image.open(path)
+        self.name = x[0]
+        self.file_type = x[1]
+        self.type = "default"
 
 class defaultImage():
     def __init__(self, data: dict) -> None:

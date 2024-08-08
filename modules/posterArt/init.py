@@ -6,4 +6,6 @@ class posterArt():
     def __init__(self, main_window: QMainWindow) -> None:
         base = uploading.uploading(main_window, "Poster Art")
 
+        print(base.buttons.open_images)
+
         print("posterArt")

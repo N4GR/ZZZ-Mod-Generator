@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErrorMessage
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize
 
@@ -87,16 +88,37 @@ class Buttons():
             files = QFileDialog.getOpenFileUrls(self.__main_window, "Open File", filter = "Image Files (*.png *.jpg)")
 
             x = []
+            failed = []
 
             for file in files[0]:
                 path = file.path()[1:]
+
+                # Check if image is corrupt
+                try:
+                    img = Image.open(path)
+                    img.close()
+                except (IOError, SyntaxError) as e:
+                    print(e)
+                    # Add failed path to failed list
+                    failed.append(path)
+                    continue
 
                 scroll_image = obj.scrollImages(path)
 
                 x.append(scroll_image)
                 self.open_images.append(scroll_image)
-            
-            self.__scroll_area.addItems(x)
+
+            if failed != []:
+                failed_lst = [f"{x}\n" for x in failed]
+                failed_str = "".join(failed_lst)
+
+                error_message = QErrorMessage(self.__main_window)
+                error_message.setWindowTitle("Corrupt Images")
+                error_message.showMessage(f"The following images are corrupted and cannot be processed:\n{failed_str}")
+                error_message.exec()
+
+            if x != []:
+                self.__scroll_area.addItems(x)
 
         button = QPushButton(self.__main_window)
         button.setText("")

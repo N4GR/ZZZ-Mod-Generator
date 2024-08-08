@@ -1,14 +1,12 @@
-import sql
+from sql import sql
+import obj
 
 ### IMAGES
 class images:
     def __init__(self) -> None:
-        sq = sql.sql()
+        sq = sql()
 
-        self.magazine = image(sq.get("images", "name = magazine_thumbnail"))
+        self.side_panel = obj.image(sq.get("images", "name = 'side_panel'"))
+        self.upload_button = obj.button(up = sq.get("images", "name = 'upload_up'"), down = sq.get("images", "name = 'upload_down'"))
 
         sq.close()
-
-class image:
-    def __init__(self, image_bytes: bytes) -> None:
-        pass

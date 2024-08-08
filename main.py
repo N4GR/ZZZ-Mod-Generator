@@ -76,7 +76,8 @@ class ui():
 
         # Initialise scroll area
         scroll = generator.scroll_area.scrollArea(self.main_window)
-        generator.scroll_area.addToScrollArea(scroll.grid_layout, scroll.scroll_area, self.main_window, modulesConfig().list)
+        #generator.scroll_area.addToScrollArea(scroll.grid_layout, scroll.scroll_area, self.main_window, modulesConfig().list)
+        scroll.addItems(modulesConfig().list)
 
         # Initialise buttons.
         self.buttons = buttons(self.main_window)

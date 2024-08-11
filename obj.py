@@ -101,6 +101,8 @@ class Canvas():
         self.height = canvas_size["height"]
         self.width = canvas_size["width"]
 
+        self.background = Image.open(io.BytesIO(self.getBackground()))
+
         # Creates a list of CanvasImage objects which contains an Image.Image object and attributes from modules.data in database.
         self.images = [CanvasImage(self.__image_asset_data[x], self.__positions[x]) for x in range(len(self.__image_asset_data))]
 
@@ -119,6 +121,15 @@ class Canvas():
         data_dict = ast.literal_eval(data[0])
 
         return data_dict
+    
+    def getBackground(self) -> bytes:
+        sq = sql.sql()
+
+        data = sq.get("modules", f"name = '{self.__module_name}'", "background")
+
+        sq.close()
+
+        return data[0]
 
 class CanvasImage():
     def __init__(self, image: defaultImage | addingImage, position: dict) -> None:

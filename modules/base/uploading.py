@@ -217,6 +217,17 @@ class imageGenerator():
         self.__start_button = start_button
         self.__module_name = module_name
 
-        canvas = obj.Canvas(self.__module_name, self.__image_asset_data)
+        self.canvas()
+    
+    def canvas(self):
+        '''A canvas function to create a canvas with Image.new()'''
+        canvas_data = obj.Canvas(self.__module_name, self.__image_asset_data)
+        canvas = canvas_data.background
 
-        print(canvas.images)
+        for image in canvas_data.images:
+            res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
+            rot_image = res_image.rotate(image.rotation, expand = True)
+        
+            canvas.paste(rot_image, (image.x, image.y))
+
+        canvas.show()

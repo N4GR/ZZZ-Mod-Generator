@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErrorMessage, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErrorMessage, QMessageBox, QInputDialog
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize
 
-from PIL import Image
+from PIL import Image, ImageOps
 from PIL.ImageQt import ImageQt
 
 import io
@@ -13,6 +13,8 @@ import obj
 import sql
 
 from wand import image
+
+import os
 
 class uploading():
     def __init__(self, main_window: QMainWindow, module_name: str) -> None:
@@ -172,22 +174,74 @@ class Buttons():
             '''
             button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.start_button.up.bytes))))))
         
-        def func():
-            if self.__maximum_replaced is False and self.__warning_skip is False:
-                error_message = QErrorMessage(self.__main_window)
-                error_message.setWindowTitle("Unpopulated Warning")
-                error_message.showMessage(f"You haven't replaced all the images, are you sure you want to continue?\nIf you do, press start again.")
-                error_message.exec()
-                self.__warning_skip = True
+        def warning():
+            '''
+            Warning function that will tell the user if they haven't inputted all the necessary images.
+            '''
+            if self.__maximum_replaced is False:
+                dialog = QMessageBox(self.__main_window)
+                dialog.setWindowTitle("Images Not Used")
+                dialog.setText(f"You haven't replaced all the images, do you want to continue anyway?")
+                dialog.setIcon(QMessageBox.Icon.Information)
+
+                dialog.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+
+                clicked = dialog.exec()
+
+                if clicked == QMessageBox.StandardButton.Yes:
+                    getModName()
+                else:
+                    return
+            else:
+                getModName()
+        
+        def getModName():
+            '''
+            Opens an input dialog for getting the name of the mod generated.
+            '''
+            dialog = QInputDialog(self.__main_window)
+            dialog.setWindowTitle("Input Mod Name")
+            dialog.setLabelText("Enter Mod Name:")
+            dialog.setInputMode(QInputDialog.InputMode.TextInput)
+
+            clicked = dialog.exec()
+
+            if clicked:
+                self.mod_name = dialog.textValue()
+                getModLocation()
+            else:
                 return
             
+        def getModLocation():
+            '''
+            Opens an input dialog for getting the location to where the mod is generated.
+            '''
+            dialog = QInputDialog(self.__main_window)
+            dialog.setWindowTitle("Input Save Location")
+            dialog.setLabelText("Enter Save Location:")
+            dialog.setInputMode(QInputDialog.InputMode.TextInput)
+            
+            clicked = dialog.exec()
+
+            if clicked:
+                self.mod_save_path = dialog.textValue()
+                func()
+            else:
+                return
+
+        def func():
+            '''
+            Starts the process of creating the mod with the given variables.
+            '''
             button.setDisabled(True)
             self.upload_button.setDisabled(True)
-            # Pass on to image generator
-            modGenerator(self.__main_window, self.__image_assets.data, button, self.__module_name)
 
-        # Warning booleon so the error message doesn't show every time.
-        self.__warning_skip = False
+            # Pass on to image generator
+            modGenerator(self.__main_window, self.__image_assets.data, button, self.upload_button, self.__module_name, self.mod_name, self.mod_save_path)
+
+        # Creating variables for save locations.
+        self.mod_name = None
+        self.mod_save_path = None
 
         # Creates the QPushbutton.
         button = QPushButton(self.__main_window)
@@ -201,7 +255,7 @@ class Buttons():
         # Attaches functions to correct button positions.
         button.pressed.connect(pressed)
         button.released.connect(released)
-        button.clicked.connect(func)
+        button.clicked.connect(warning)
 
         # Removes border from the back of the images.
         button.setStyleSheet("QPushButton {background-color: transparent; border: 0px}")
@@ -212,7 +266,7 @@ class Buttons():
         return button
 
 class modGenerator():
-    def __init__(self, main_window: QMainWindow, image_asset_data: list[object], start_button: QPushButton, module_name: str) -> None:
+    def __init__(self, main_window: QMainWindow, image_asset_data: list[object], start_button: QPushButton, upload_button: QPushButton, module_name: str, mod_name: str, save_location: str) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
         
         Attributes:
@@ -225,13 +279,21 @@ class modGenerator():
         self.__main_window = main_window
         self.__image_asset_data = image_asset_data
         self.__start_button = start_button
+        self.__upload_button = upload_button
         self.__module_name = module_name
+        self.__mod_name = mod_name
+        self.__save_location = save_location
 
         self.canvas = self.makeCanvas()
         self.iniBytes = self.getINI()
 
+        self.mod_location = self.makeFolder()
+
         self.DDSLocation = self.convertToDDS(self.canvas)
         self.INILocation = self.saveINI(self.iniBytes)
+
+        self.__start_button.setDisabled(False)
+        self.__upload_button.setDisabled(False)
 
     def makeCanvas(self) -> Image.Image:
         '''A canvas function to create a canvas with Image.new()'''
@@ -243,8 +305,6 @@ class modGenerator():
             rot_image = res_image.rotate(image.rotation, expand = True)
         
             canvas.paste(rot_image, (image.x, image.y))
-
-        canvas.show()
 
         return canvas
     
@@ -259,13 +319,25 @@ class modGenerator():
 
         return iniblob
     
-    def convertToDDS(self, canvas: Image.Image, location: str = None) -> str:
+    def makeFolder(self) -> str:
+        mod_path = f"{self.__save_location}\\{self.__mod_name}"
+
+        if not os.path.exists(mod_path):
+            os.makedirs(mod_path)
+            print("Created")
+        else:
+            print("Already exists")
+
+        return mod_path
+
+    def convertToDDS(self, canvas: Image.Image) -> str:
         '''Convert canvas image to DDS and save it to a location.'''
+        canvas = ImageOps.flip(canvas)
         stream = io.BytesIO()
         canvas.save(stream, format = "PNG")
         imagebytes = stream.getvalue()
 
-        file_path = f"{location}\\{self.__module_name}.dds" if location is not None else self.__module_name
+        file_path = f"{self.mod_location}\\{self.__module_name}"
 
         with image.Image(blob = imagebytes) as img:
             img.compression = "dxt5"
@@ -273,9 +345,9 @@ class modGenerator():
 
         return f"{file_path}.dds"
 
-    def saveINI(self, iniBytes: bytes, location: str = None) -> str:
+    def saveINI(self, iniBytes: bytes) -> str:
         '''Creates an INI file and saves it to a location.'''
-        file_path = f"{location}\\{self.__module_name}" if location is not None else self.__module_name
+        file_path = f"{self.mod_location}\\{self.__mod_name}"
 
         with open(f"{file_path}.ini", "wb") as binary:
             binary.write(iniBytes)

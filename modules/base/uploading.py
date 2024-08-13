@@ -184,7 +184,7 @@ class Buttons():
             button.setDisabled(True)
             self.upload_button.setDisabled(True)
             # Pass on to image generator
-            imageGenerator(self.__main_window, self.__image_assets.data, button, self.__module_name)
+            modGenerator(self.__main_window, self.__image_assets.data, button, self.__module_name)
 
         # Warning booleon so the error message doesn't show every time.
         self.__warning_skip = False
@@ -211,8 +211,17 @@ class Buttons():
 
         return button
 
-class imageGenerator():
+class modGenerator():
     def __init__(self, main_window: QMainWindow, image_asset_data: list[object], start_button: QPushButton, module_name: str) -> None:
+        '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
+        
+        Attributes:
+            canvas [PIL.Image.Image]: Canvas image object of generated image.
+            iniBytes [bytes]: Bytes of INI file.
+            DDSLocation [str]: Location for where the DDS was saved.
+            INILocation [str]: Location for where the INI was saved.
+        '''
+        
         self.__main_window = main_window
         self.__image_asset_data = image_asset_data
         self.__start_button = start_button
@@ -240,6 +249,7 @@ class imageGenerator():
         return canvas
     
     def getINI(self) -> bytes:
+        '''getINI function to retrieve bytes of module name from database.'''
         sq = sql.sql()
 
         iniblob = sq.get("modules", f"name = '{self.__module_name}'", "ini")
@@ -250,6 +260,7 @@ class imageGenerator():
         return iniblob
     
     def convertToDDS(self, canvas: Image.Image, location: str = None) -> str:
+        '''Convert canvas image to DDS and save it to a location.'''
         stream = io.BytesIO()
         canvas.save(stream, format = "PNG")
         imagebytes = stream.getvalue()
@@ -263,6 +274,7 @@ class imageGenerator():
         return f"{file_path}.dds"
 
     def saveINI(self, iniBytes: bytes, location: str = None) -> str:
+        '''Creates an INI file and saves it to a location.'''
         file_path = f"{location}\\{self.__module_name}" if location is not None else self.__module_name
 
         with open(f"{file_path}.ini", "wb") as binary:

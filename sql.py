@@ -1,10 +1,12 @@
 import sqlite3
-import pickle
+import os
+
+ASSET_PATH = f"{os.getcwd()}\\assets"
 
 class sql():
     def __init__(self) -> None:
         '''SQL Class to obtain data from the database.'''
-        self.__connection = sqlite3.connect("config\\data.sqlite")
+        self.__connection = sqlite3.connect(f"{ASSET_PATH}\\data.sqlite")
         self.__cursor = self.__connection.cursor()
     
     def close(self):
@@ -44,7 +46,7 @@ class sql():
 class __SQL():
     def __init__(self) -> None:
         '''SQL Class to obtain data from the database.'''
-        self.__connection = sqlite3.connect("config\\data.sqlite")
+        self.__connection = sqlite3.connect(f"{ASSET_PATH}\\data.sqlite")
         self.__cursor = self.__connection.cursor()
     
     def close(self):

@@ -1,4 +1,7 @@
 import sqlite3
+import os
+
+ASSET_PATH = f"{os.getcwd()}\\assets"
 
 class modulesConfig():
     def __init__(self) -> None:
@@ -20,7 +23,7 @@ class modulesConfig():
         """
 
     def getModules(self):
-        self.connection = sqlite3.connect("config\\data.sqlite")
+        self.connection = sqlite3.connect(f"{ASSET_PATH}\\data.sqlite")
         self.cursor = self.connection.cursor()
 
         modules = self.cursor.execute("SELECT * FROM modules").fetchall()

@@ -10,7 +10,7 @@ class getImages():
         Attributes:
             images: list of image data
         '''
-        self.connection = sqlite3.connect("config\\data.sqlite")
+        self.connection = sqlite3.connect(f"{ASSET_PATH}\\data.sqlite")
         self.cursor = self.connection.cursor()
 
         self.images = self.makeImages()
@@ -89,4 +89,4 @@ class image:
 ### FONTS
 class fonts:
     def __init__(self) -> None:
-        self.inpin = f"{ASSET_PATH}\\fonts\\inpin.ttf"
+        self.inpin = f"{ASSET_PATH}\\inpin.ttf"

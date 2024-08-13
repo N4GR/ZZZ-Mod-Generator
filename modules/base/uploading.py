@@ -8,10 +8,11 @@ from PIL.ImageQt import ImageQt
 import io
 
 from generator.scroll_area import scrollArea
-
 from modules.base import assets
-
 import obj
+import sql
+
+from wand import image
 
 class uploading():
     def __init__(self, main_window: QMainWindow, module_name: str) -> None:
@@ -217,9 +218,13 @@ class imageGenerator():
         self.__start_button = start_button
         self.__module_name = module_name
 
-        self.canvas()
-    
-    def canvas(self):
+        self.canvas = self.makeCanvas()
+        self.iniBytes = self.getINI()
+
+        self.DDSLocation = self.convertToDDS(self.canvas)
+        self.INILocation = self.saveINI(self.iniBytes)
+
+    def makeCanvas(self) -> Image.Image:
         '''A canvas function to create a canvas with Image.new()'''
         canvas_data = obj.Canvas(self.__module_name, self.__image_asset_data)
         canvas = canvas_data.background
@@ -231,3 +236,36 @@ class imageGenerator():
             canvas.paste(rot_image, (image.x, image.y))
 
         canvas.show()
+
+        return canvas
+    
+    def getINI(self) -> bytes:
+        sq = sql.sql()
+
+        iniblob = sq.get("modules", f"name = '{self.__module_name}'", "ini")
+        iniblob = iniblob[0]
+
+        sq.close()
+
+        return iniblob
+    
+    def convertToDDS(self, canvas: Image.Image, location: str = None) -> str:
+        stream = io.BytesIO()
+        canvas.save(stream, format = "PNG")
+        imagebytes = stream.getvalue()
+
+        file_path = f"{location}\\{self.__module_name}.dds" if location is not None else self.__module_name
+
+        with image.Image(blob = imagebytes) as img:
+            img.compression = "dxt5"
+            img.save(filename = f"{file_path}.dds")
+
+        return f"{file_path}.dds"
+
+    def saveINI(self, iniBytes: bytes, location: str = None) -> str:
+        file_path = f"{location}\\{self.__module_name}" if location is not None else self.__module_name
+
+        with open(f"{file_path}.ini", "wb") as binary:
+            binary.write(iniBytes)
+
+        return f"{file_path}.ini"

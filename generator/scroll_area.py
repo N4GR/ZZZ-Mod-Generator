@@ -12,7 +12,7 @@ import io
 import config.module
 
 class N4QToolButton(QToolButton):
-    def __init__(self, button_name: str, button_icon: bytes) -> None:
+    def __init__(self, button_name: str, button_icon: ImageQt) -> None:
         super(N4QToolButton, self).__init__()
 
         font = QFont("inpin", 12)
@@ -20,7 +20,7 @@ class N4QToolButton(QToolButton):
         self.setFont(font)
         self.setText(button_name)
         self.setFixedSize(150, 200)
-        self.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(button_icon))))))
+        self.setIcon(QIcon(QPixmap.fromImage(button_icon)))
         self.setIconSize(QSize(124, 124))
         self.setStyleSheet("""
             QPushButton {

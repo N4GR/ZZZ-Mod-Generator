@@ -8,7 +8,6 @@ from PIL.ImageQt import ImageQt
 import io
 
 from generator.scroll_area import scrollArea
-from modules.base import assets
 import obj
 import sql
 
@@ -16,45 +15,58 @@ from wand import image
 
 import os
 
+from config import assets
+from config.paths import *
+
+import json
+
+BUTTON_ASSETS = assets.button()
+PANEL_ASSETS = assets.panel()
+FONT_ASSETS = assets.font()
+
 class uploading():
     def __init__(self, main_window: QMainWindow, module_name: str) -> None:
-        IMAGE_ASSETS = assets.images(module_name)
         self.module_name = module_name
 
         # Initialising new images
-        self.images = Images(main_window, image_assets = IMAGE_ASSETS)
+        self.images = Images(main_window)
+
+        # Creating list of default images.
+        images = []
+        with open(f"{MODULE_PATH}\\{module_name}\\positions.json") as file:
+            for position in json.load(file)["positions"]:
+                images.append(obj.defaultImage(position))
         
         # Initialising new scroll area
         self.scroll_area = scrollArea(main_window, (683, 460), 5)
-        self.scroll_area.addItems(IMAGE_ASSETS.data, initial = True)
+        self.scroll_area.addItems(images, initial = True)
 
         # Initialising new buttons
-        self.buttons = Buttons(main_window, self.scroll_area, image_assets = IMAGE_ASSETS, module_name = module_name)
+        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images)
 
 class Images():
-    def __init__(self, main_window: QMainWindow, image_assets) -> None:
+    def __init__(self, main_window: QMainWindow) -> None:
         '''Images class containing and initialising all images for base.
 
         Attributes:
             side_panel [QLabel]: Side panel of the boxArt UI.
         '''
-        self.__image_assets = image_assets 
         self.__main_window = main_window
         
         self.side_panel = self.sidePanel()
     
     def sidePanel(self):
         label = QLabel(self.__main_window)
-        pixmap = QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.side_panel.bytes))))
+        pixmap = QPixmap.fromImage(PANEL_ASSETS.right_panel)
 
         label.setPixmap(pixmap)
-        label.setGeometry(690, 108, self.__image_assets.side_panel.width, self.__image_assets.side_panel.height)
+        label.setGeometry(690, 108, PANEL_ASSETS.right_panel.width(), PANEL_ASSETS.right_panel.height())
 
         label.show()
         return label
 
 class Buttons():
-    def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, image_assets, module_name: str) -> None:
+    def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list) -> None:
         '''Buttons class containing and initialising all buttons for base.
 
         Attributes:
@@ -62,9 +74,9 @@ class Buttons():
             open_images [list[object]]: List of scrollImages objects of currently open images.
         '''
         # Creates private attributes
+        self.__images = images
         self.__main_window = main_window
         self.__scroll_area = scroll_area
-        self.__image_assets = image_assets
         self.__module_name = module_name
 
         # Creates open_images list for self.upload() to add to
@@ -79,13 +91,13 @@ class Buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.upload_button.down.bytes))))))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.upload_button.up.bytes))))))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.up)))
 
         def func():
             files = QFileDialog.getOpenFileUrls(self.__main_window, "Open File", filter = "Image Files (*.png *.jpg)")
@@ -117,7 +129,7 @@ class Buttons():
                 self.open_images.append(scroll_image)
 
                 # Replace the item in opened images assets
-                self.__image_assets.data[len(self.open_images) - 1] = obj.addingImage(path)
+                self.__images[len(self.open_images) - 1] = obj.addingImage(path)
 
             if self.__maximum_replaced is True:
                 error_message = QErrorMessage(self.__main_window)
@@ -143,13 +155,13 @@ class Buttons():
         self.__maximum_replaced = False
 
         # Obtains the amount of widgets created when the main file is initialised.
-        opened_widgets = len(self.__image_assets.data)
+        opened_widgets = len(self.__images)
 
         button = QPushButton(self.__main_window)
         button.setText("")
         button.setGeometry(700, 150, 80, 52)
 
-        button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.upload_button.up.bytes))))))
+        button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.up)))
         button.setIconSize(QSize(52, 52))
 
         button.pressed.connect(pressed)
@@ -166,13 +178,13 @@ class Buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.start_button.down.bytes))))))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.start.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.start_button.up.bytes))))))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.start.up)))
         
         def warning():
             '''
@@ -234,6 +246,7 @@ class Buttons():
                     else:
                         self.mod_save_path = dialog.textValue()
                         func()
+                        break
                 else:
                     return
 
@@ -245,7 +258,7 @@ class Buttons():
             self.upload_button.setDisabled(True)
 
             # Pass on to image generator
-            modGenerator(self.__main_window, self.__image_assets.data, button, self.upload_button, self.__module_name, self.mod_name, self.mod_save_path)
+            modGenerator(self.__main_window, self.__images, button, self.upload_button, self.__module_name, self.mod_name, self.mod_save_path)
 
         # Creating variables for save locations.
         self.mod_name = None
@@ -257,7 +270,7 @@ class Buttons():
         button.setGeometry(700, 225, 80, 52)
 
         # Sets the button's icon QPixmap to a given image in assets.
-        button.setIcon(QIcon(QPixmap.fromImage(ImageQt(Image.open(io.BytesIO(self.__image_assets.start_button.up.bytes))))))
+        button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.start.up)))
         button.setIconSize(QSize(52, 52))
 
         # Attaches functions to correct button positions.
@@ -274,7 +287,7 @@ class Buttons():
         return button
 
 class modGenerator():
-    def __init__(self, main_window: QMainWindow, image_asset_data: list[object], start_button: QPushButton, upload_button: QPushButton, module_name: str, mod_name: str, save_location: str) -> None:
+    def __init__(self, main_window: QMainWindow, images: list[object], start_button: QPushButton, upload_button: QPushButton, module_name: str, mod_name: str, save_location: str) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
         
         Attributes:
@@ -285,7 +298,7 @@ class modGenerator():
         '''
         
         self.__main_window = main_window
-        self.__image_asset_data = image_asset_data
+        self.__images = images
         self.__start_button = start_button
         self.__upload_button = upload_button
         self.__module_name = module_name
@@ -293,19 +306,18 @@ class modGenerator():
         self.__save_location = save_location
 
         self.canvas = self.makeCanvas()
-        self.iniBytes = self.getINI()
 
         self.mod_location = self.makeFolder()
 
         self.DDSLocation = self.convertToDDS(self.canvas)
-        self.INILocation = self.saveINI(self.iniBytes)
+        self.INILocation = self.saveINI()
 
         self.__start_button.setDisabled(False)
         self.__upload_button.setDisabled(False)
 
     def makeCanvas(self) -> Image.Image:
         '''A canvas function to create a canvas with Image.new()'''
-        canvas_data = obj.Canvas(self.__module_name, self.__image_asset_data)
+        canvas_data = obj.Canvas(self.__module_name, self.__images)
         canvas = canvas_data.background
 
         for image in canvas_data.images:
@@ -315,17 +327,6 @@ class modGenerator():
             canvas.paste(rot_image, (image.x, image.y))
 
         return canvas
-    
-    def getINI(self) -> bytes:
-        '''getINI function to retrieve bytes of module name from database.'''
-        sq = sql.sql()
-
-        iniblob = sq.get("modules", f"name = '{self.__module_name}'", "ini")
-        iniblob = iniblob[0]
-
-        sq.close()
-
-        return iniblob
     
     def makeFolder(self) -> str:
         mod_path = f"{self.__save_location}\\{self.__mod_name}"
@@ -353,11 +354,26 @@ class modGenerator():
 
         return f"{file_path}.dds"
 
-    def saveINI(self, iniBytes: bytes) -> str:
+    def saveINI(self) -> str:
+        def getHash() -> str:
+            with open(f"{MODULE_PATH}\\{self.__module_name}\\data.json") as file:
+                return json.load(file)["hash"]
+
         '''Creates an INI file and saves it to a location.'''
         file_path = f"{self.mod_location}\\{self.__mod_name}"
 
-        with open(f"{file_path}.ini", "wb") as binary:
-            binary.write(iniBytes)
+        lines = f"""; Overrides
+[TextureOverride{self.__module_name}]
+hash = {getHash()}
+this = Resource{self.__module_name}
 
-        return f"{file_path}.ini"
+; Resources
+[Resource{self.__module_name}]
+filename = {self.__module_name}.dds
+
+; Mod Generated By N4GR
+; https://github.com/Vamptek
+; https://github.com/Vamptek/ZZZ-Mod-Generator"""
+
+        with open(f"{file_path}.ini", "w+") as file:
+            file.writelines(lines)

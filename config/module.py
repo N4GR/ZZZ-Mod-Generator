@@ -1,60 +1,38 @@
-import sqlite3
 import os
+import json
 
-ASSET_PATH = f"{os.getcwd()}\\assets"
+from config.paths import *
 
-class modulesConfig():
+from PIL.ImageQt import ImageQt
+from PIL import Image
+
+class module():
     def __init__(self) -> None:
-        '''Creates a list of module objects
+        module_directories = os.listdir(MODULE_PATH)
 
-        Attributes:
-            list: A list of module objects.
-        '''
-        self.list = self.getModules()
-        """list: list of module objects
-        
-        Attributes:
-            type:           str type of object\n
-            name:           str name of module
-            function_name:  str name of function
-            thumbnail:      bytes image of thumbnail
-            description:    str description of module
-            data:           any data for module to use
-        """
+        self.list = []
+        for path in module_directories:
+            self.list.append(self.moduleObject(f"{MODULE_PATH}\\{path}"))
 
-    def getModules(self):
-        self.connection = sqlite3.connect(f"{ASSET_PATH}\\data.sqlite")
-        self.cursor = self.connection.cursor()
+    class moduleObject():
+        def __init__(self, path: str) -> None:
+            '''
+            Object constructur for the module dictionary.
 
-        modules = self.cursor.execute("SELECT * FROM modules").fetchall()
-        self.connection.close()
+            Attributes:
+                name:           str name of module\n
+                function_name:  str name of function
+                thumbnail:      bytes image of thumbnail
+                description:    str description of module
+                data:           any data for module to use
+            '''
+            with open(f"{path}\\data.json") as file:
+                data = json.load(file)
 
-        mods = []
-
-        for module in modules:
-            mods.append(moduleObject(module))
-        
-        return mods
-
-class moduleObject():
-    def __init__(self, module) -> None:
-        '''
-        Object constructur for the module dictionary.
-
-        Attributes:
-            name:           str name of module\n
-            function_name:  str name of function
-            thumbnail:      bytes image of thumbnail
-            description:    str description of module
-            data:           any data for module to use
-        '''
-        self.type = "module"
-        self.name =  module[1]
-        self.function_name = module[2]
-        self.thumbnail = module[3]
-        self.description = module[4]
-        self.data = module[5]
-
+            self.type = "module"
+            self.name =  data["name"]
+            self.function_name = data["function_name"]
+            self.thumbnail = ImageQt(Image.open(f"{path}\\thumbnail.png"))
 
 from PyQt6.QtWidgets import QMainWindow
 

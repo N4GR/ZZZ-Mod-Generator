@@ -4,8 +4,10 @@ from PIL.ImageQt import ImageQt
 from PIL import Image, ImageDraw, ImageFont
 
 import ast
-import sql
 import io
+import json
+
+from config.paths import *
 
 class image():
     def __init__(self, data: dict) -> None:
@@ -101,7 +103,7 @@ class Canvas():
         self.height = canvas_size["height"]
         self.width = canvas_size["width"]
 
-        self.background = Image.open(io.BytesIO(self.getBackground()))
+        self.background = Image.open(f"{MODULE_PATH}\\{self.__module_name}\\background.png")
 
         # Creates a list of CanvasImage objects which contains an Image.Image object and attributes from modules.data in database.
         self.images = [CanvasImage(self.__image_asset_data[x], self.__positions[x]) for x in range(len(self.__image_asset_data))]
@@ -112,25 +114,9 @@ class Canvas():
         Returns:
             dict["canvas_size", "positions"]
         '''
-        sq = sql.sql()
-
-        data = sq.get("modules", f"name = '{self.__module_name}'", "data")
-
-        sq.close()
-
-        data_dict = ast.literal_eval(data[0])
-
-        return data_dict
+        with open(f"{MODULE_PATH}\\{self.__module_name}\\positions.json") as file:
+            return json.load(file)
     
-    def getBackground(self) -> bytes:
-        sq = sql.sql()
-
-        data = sq.get("modules", f"name = '{self.__module_name}'", "background")
-
-        sq.close()
-
-        return data[0]
-
 class CanvasImage():
     def __init__(self, image: defaultImage | addingImage, position: dict) -> None:
         '''CanvasImage object which contains information needed to generate a usable canvas.

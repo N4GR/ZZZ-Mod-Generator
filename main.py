@@ -5,8 +5,11 @@ from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
 from PyQt6.QtCore import QSize, Qt, QPoint
 
 from config.window import windowConfig
-from config.assets import assetConfig
-from config.module import modulesConfig
+from config.module import module
+
+from config.assets import button
+from config.assets import panel
+from config.assets import font
 
 import generator.scroll_area
 
@@ -17,10 +20,10 @@ class MainWindow(QMainWindow):
         self.setFixedSize(WINDOW.width, WINDOW.height)
         self.setWindowTitle(WINDOW.title)
 
-        self.setWindowIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon.image)))
+        self.setWindowIcon(QIcon(QPixmap.fromImage(PANEL_ASSETS.icon)))
 
         label = QLabel(self)
-        label.setPixmap(QPixmap.fromImage(ASSETS.images.background.image))
+        label.setPixmap(QPixmap.fromImage(PANEL_ASSETS.background))
         self.setCentralWidget(label)
 
         self.setStyleSheet(r"QMainWindow {background: transparent}")
@@ -77,7 +80,7 @@ class ui():
         # Initialise scroll area
         scroll = generator.scroll_area.scrollArea(self.main_window)
         #generator.scroll_area.addToScrollArea(scroll.grid_layout, scroll.scroll_area, self.main_window, modulesConfig().list)
-        scroll.addItems(modulesConfig().list)
+        scroll.addItems(module().list)
 
         # Initialise buttons.
         self.buttons = buttons(self.main_window)
@@ -103,7 +106,7 @@ class text():
         '''
         self.main_window = main_window
 
-        QFontDatabase.addApplicationFont(ASSETS.fonts.inpin)
+        QFontDatabase.addApplicationFont(FONT_ASSETS.inpin)
         
         self.title = self.titleText()
     
@@ -140,13 +143,13 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.down.image)))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up.image)))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.up)))
         
         def func():
             sys.exit()
@@ -159,7 +162,7 @@ class buttons():
         button.setGeometry(690, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.exit.up.image)))
+        button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -172,13 +175,13 @@ class buttons():
             '''
             Changes the button icon on press.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.down.image)))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.down)))
 
         def released():
             '''
             Changes the button icon on release.
             '''
-            button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up.image)))
+            button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.up)))
         
         def func():
             self.main_window.showMinimized()
@@ -191,7 +194,7 @@ class buttons():
         button.setGeometry(600, 30, 80, 52)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.buttons.minimise.up.image)))
+        button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.up)))
         button.setIconSize(QSize(80, 52))
 
         # Object styling handling
@@ -220,7 +223,7 @@ class buttons():
         button.setGeometry(20, 20, 64, 64)
 
         # Setting icon
-        button.setIcon(QIcon(QPixmap.fromImage(ASSETS.images.icon.image)))
+        button.setIcon(QIcon(QPixmap.fromImage(PANEL_ASSETS.icon)))
         button.setIconSize(QSize(64, 64))
 
         # Object styling handling
@@ -229,7 +232,9 @@ class buttons():
         return button
 
 if __name__ == "__main__":
-    ASSETS = assetConfig()
+    BUTTON_ASSETS = button()
+    PANEL_ASSETS = panel()
+    FONT_ASSETS = font()
     WINDOW = windowConfig()
 
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(WINDOW.app_id)

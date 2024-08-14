@@ -207,7 +207,11 @@ class Buttons():
             clicked = dialog.exec()
 
             if clicked:
-                self.mod_name = dialog.textValue()
+                # Removes unsafe characters from mod name
+                dir_name = dialog.textValue()
+                dir_name = "".join(c for c in dir_name if c.isalpha() or c.isdigit() or c==' ').rstrip()
+                self.mod_name = dir_name
+                print(self.mod_name)
                 getModLocation()
             else:
                 return
@@ -216,18 +220,22 @@ class Buttons():
             '''
             Opens an input dialog for getting the location to where the mod is generated.
             '''
-            dialog = QInputDialog(self.__main_window)
-            dialog.setWindowTitle("Input Save Location")
-            dialog.setLabelText("Enter Save Location:")
-            dialog.setInputMode(QInputDialog.InputMode.TextInput)
-            
-            clicked = dialog.exec()
+            while True:
+                dialog = QInputDialog(self.__main_window)
+                dialog.setWindowTitle("Input Save Location")
+                dialog.setLabelText("Enter Save Location:")
+                dialog.setInputMode(QInputDialog.InputMode.TextInput)
+                
+                clicked = dialog.exec()
 
-            if clicked:
-                self.mod_save_path = dialog.textValue()
-                func()
-            else:
-                return
+                if clicked:
+                    if not os.path.isdir(dialog.textValue()):
+                        QMessageBox.warning(self.__main_window, "Invalid Input", f"{dialog.textValue()} is not a valid directory, please try again.")
+                    else:
+                        self.mod_save_path = dialog.textValue()
+                        func()
+                else:
+                    return
 
         def func():
             '''

@@ -9,7 +9,6 @@ import io
 
 from generator.scroll_area import scrollArea
 import obj
-import sql
 
 from wand import image
 

@@ -1,16 +1,15 @@
-from PyQt6.QtGui import QPixmap, QIcon
-
-from PIL.ImageQt import ImageQt
 from PIL import Image, ImageDraw, ImageFont
 
-import ast
-import io
 import json
 
 from config.paths import *
+from config.assets import font
 
 class image():
-    def __init__(self, data: dict) -> None:
+    def __init__(
+            self,
+            data: dict) -> None:
+        
         '''Image creation class, give an image from database to create object.
 
         Attributes:
@@ -34,12 +33,19 @@ class image():
         self.size = self.__data[7]
 
 class button():
-    def __init__(self, up: dict, down: dict) -> None:
+    def __init__(
+            self,
+            up: dict,
+            down: dict) -> None:
+        
         self.up = image(up)
         self.down = image(down)
 
 class scrollImages():
-    def __init__(self, path: str) -> None:
+    def __init__(
+            self,
+            path: str) -> None:
+        
         x = path.split("/")[-1].split(".")
 
         self.path = path        
@@ -48,7 +54,10 @@ class scrollImages():
         self.file_type = x[1]
 
 class addingImage():
-    def __init__(self, path: str) -> None:
+    def __init__(
+            self,
+            path: str) -> None:
+        
         x = path.split("/")[-1].split(".")
 
         self.image = Image.open(path)
@@ -57,18 +66,38 @@ class addingImage():
         self.type = "default"
 
 class defaultImage():
-    def __init__(self, data: dict) -> None:
+    def __init__(
+            self,
+            data: dict) -> None:
+        """DefaultImage creation class that generates an image.
+
+        Args:
+            data (dict):    Data to be passed to the default image. {image_width, image_height}
+
+        Attributes:
+            image (Image):  Image automatically created with centered text.
+            name (str):     Name of the image. "Poster #1"
+            type (str):     Type of Image. "default"
+        """
         self.__data = data
 
         self.image = self.makeImage()
         self.name = self.__data["name"]
         self.type = "default"
 
-    def makeImage(self):
-        width, height = self.__data["image_width"], self.__data["image_height"]
+    def makeImage(self) -> Image:
+        """Creates a default image with text in the centre.
+
+        Returns:
+            Image: The image that has been created.
+        """
+        width, height = (self.__data["image_width"],
+                         self.__data["image_height"])
             
         # Creating image canvas
-        image = Image.new("RGBA", (width, height), color = (0, 0, 0))
+        image = Image.new("RGBA",
+                          (width, height),
+                          color = (0, 0, 0))
 
         # Creating image draw
         draw = ImageDraw.Draw(image)
@@ -76,23 +105,51 @@ class defaultImage():
         # Adding text
         text = self.__data["name"]
 
+        font_size = 20
+
         text_color = (255, 255, 255)
-        font = ImageFont.load_default()
+        text_font = ImageFont.truetype(font().inpin,
+                                       font_size)
+
+        # Adjusting image to fill image width with a 10 pixel margin.
+        while True:
+            bbox = draw.textbbox((0, 0),
+                                 text,
+                                 font = text_font)
+            
+            text_width = bbox[2] - bbox[0]
+
+            if text_width + 10 * 2 > width:
+                break
+
+            font_size += 1
+            text_font = ImageFont.truetype(font().inpin,
+                                           font_size)
 
         # Calculate text size and position using textbbox
-        text_bbox = draw.textbbox((0, 0), text, font=font)
+        text_bbox = draw.textbbox((0, 0),
+                                  text,
+                                  font = text_font)
+        
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
         text_x = (width - text_width) // 2
         text_y = (height - text_height) // 2
 
         # Draw the text
-        draw.text((text_x, text_y), text, fill = text_color, font=font)
+        draw.text((text_x, text_y),
+                  text,
+                  fill = text_color,
+                  font = text_font)
 
         return image
     
 class Canvas():
-    def __init__(self, module_name: str, image_asset_data: list) -> None:
+    def __init__(
+            self,
+            module_name: str,
+            image_asset_data: list) -> None:
+        
         self.__module_name = module_name
         self.__image_asset_data = image_asset_data
         
@@ -106,7 +163,8 @@ class Canvas():
         self.background = Image.open(f"{MODULE_PATH}\\{self.__module_name}\\background.png")
 
         # Creates a list of CanvasImage objects which contains an Image.Image object and attributes from modules.data in database.
-        self.images = [CanvasImage(self.__image_asset_data[x], self.__positions[x]) for x in range(len(self.__image_asset_data))]
+        self.images = [CanvasImage(self.__image_asset_data[x],
+                                   self.__positions[x]) for x in range(len(self.__image_asset_data))]
 
     def getData(self) -> dict:
         '''A function to return a dictionary of data from the modules directory with a given module name.
@@ -118,7 +176,10 @@ class Canvas():
             return json.load(file)
     
 class CanvasImage():
-    def __init__(self, image: defaultImage | addingImage, position: dict) -> None:
+    def __init__(
+            self,
+            image: defaultImage | addingImage,
+            position: dict) -> None:
         '''CanvasImage object which contains information needed to generate a usable canvas.
         
         Attributes:

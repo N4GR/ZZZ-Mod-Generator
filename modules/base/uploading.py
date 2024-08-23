@@ -17,13 +17,13 @@ class uploading():
         self.main_window = main_window
 
         # Initialising new images
-        self.images = Images(main_window)
+        self.window_images = Images(main_window)
         
         # Initialising new scroll area
-        self.scroll_area, self.images = self.createDefaultScrollArea()
+        self.scroll_area, self.other_images = self.createDefaultScrollArea()
 
         # Initialising new buttons
-        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = self.images, specialties = specialties)
+        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = self.other_images, specialties = specialties, window_images = self.window_images)
     
     def createDefaultScrollArea(self) -> scrollArea:
          # Creating list of default images.
@@ -49,6 +49,7 @@ class Images():
         self.__main_window = main_window
         
         self.side_panel = self.sidePanel()
+        self.loading_animation = self.loadingAnimation()
     
     def sidePanel(self):
         label = QLabel(self.__main_window)
@@ -58,10 +59,33 @@ class Images():
         label.setGeometry(690, 108, PANEL_ASSETS.right_panel.width(), PANEL_ASSETS.right_panel.height())
 
         label.show()
+
+        return label
+    
+    def loadingAnimation(self):
+        label = QLabel(self.__main_window)
+        label.setFixedSize(52, 52)
+        movie = QMovie(f"{PANEL_PATH}\\loading.gif")
+        movie.setScaledSize(QSize(label.width(), label.height()))
+
+        label.setMovie(movie)
+        movie.start()
+
+        label.setGeometry(715, 500, 52, 52)
+
+        label.hide()
+
         return label
 
 class Buttons():
-    def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list, specialties: bool) -> None:
+    def __init__(self,
+                 main_window: QMainWindow,
+                 scroll_area: scrollArea,
+                 module_name: str,
+                 images: list,
+                 specialties: bool,
+                 window_images: Images) -> None:
+        
         '''Buttons class containing and initialising all buttons for base.
 
         Attributes:
@@ -74,6 +98,7 @@ class Buttons():
         self.__scroll_area = scroll_area
         self.__module_name = module_name
         self.__specialties = specialties
+        self.__window_images = window_images
 
         # Creates open_images list for self.upload() to add to
         self.open_images = []
@@ -155,7 +180,7 @@ class Buttons():
 
         button = QPushButton(self.__main_window)
         button.setText("")
-        button.setGeometry(700, 150, 80, 52)
+        button.setGeometry(715, 150, 52, 52)
 
         button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.up)))
         button.setIconSize(QSize(52, 52))
@@ -241,6 +266,7 @@ class Buttons():
                         QMessageBox.warning(self.__main_window, "Invalid Input", f"{dialog.textValue()} is not a valid directory, please try again.")
                     else:
                         self.mod_save_path = dialog.textValue()
+
                         func()
                         break
                 else:
@@ -250,11 +276,28 @@ class Buttons():
             '''
             Starts the process of creating the mod with the given variables.
             '''
+            self.thread = modGenerator(self.__images, self.__module_name, self.mod_name, self.mod_save_path, self.__specialties)
+            self.thread.started.connect(HideWidgets)
+            self.thread.finished.connect(ShowWidgets)
+
+            self.thread.start()
+
+        
+        def HideWidgets():
+            # Disables start and upload buttons.
             button.setDisabled(True)
             self.upload_button.setDisabled(True)
 
-            # Pass on to image generator
-            modGenerator(self.__images, self.__module_name, self.mod_name, self.mod_save_path, self.__specialties)
+            # Show loading gif.
+            self.__window_images.loading_animation.show()
+        
+        def ShowWidgets():
+            # Disables start and upload buttons.
+            button.setEnabled(True)
+            self.upload_button.setEnabled(True)
+
+            # Show loading gif.
+            self.__window_images.loading_animation.hide()
 
         # Creating variables for save locations.
         self.mod_name = None
@@ -263,7 +306,7 @@ class Buttons():
         # Creates the QPushbutton.
         button = QPushButton(self.__main_window)
         button.setText("")
-        button.setGeometry(700, 225, 80, 52)
+        button.setGeometry(715, 225, 52, 52)
 
         # Sets the button's icon QPixmap to a given image in assets.
         button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.start.up)))
@@ -285,7 +328,7 @@ class Buttons():
     def restartButton(self):
         pass
 
-class modGenerator():
+class modGenerator(QThread):
     def __init__(self, images: list[object], module_name: str, mod_name: str, save_location: str, specialties: bool) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
         
@@ -295,12 +338,15 @@ class modGenerator():
             DDSLocation [str]: Location for where the DDS was saved.
             INILocation [str]: Location for where the INI was saved.
         '''
+        super().__init__()
+
         self.__images = images
         self.__module_name = module_name
         self.__mod_name = mod_name
         self.__save_location = save_location
         self.__specialties = specialties
-
+    
+    def run(self):
         self.specialties = Specialties()
         if self.__specialties is True:
             self.special_method = getattr(self.specialties, self.__module_name)

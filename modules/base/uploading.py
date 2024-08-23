@@ -23,6 +23,7 @@ FONT_ASSETS = assets.font()
 
 class uploading():
     def __init__(self, main_window: QMainWindow, module_name: str) -> None:
+    def __init__(self, main_window: QMainWindow, module_name: str, specialties: bool = False) -> None:
         self.module_name = module_name
 
         # Initialising new images
@@ -40,6 +41,7 @@ class uploading():
 
         # Initialising new buttons
         self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images)
+        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images, specialties = specialties)
 
 class Images():
     def __init__(self, main_window: QMainWindow) -> None:
@@ -64,6 +66,7 @@ class Images():
 
 class Buttons():
     def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list) -> None:
+    def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list, specialties: bool) -> None:
         '''Buttons class containing and initialising all buttons for base.
 
         Attributes:
@@ -256,6 +259,7 @@ class Buttons():
 
             # Pass on to image generator
             modGenerator(self.__main_window, self.__images, button, self.upload_button, self.__module_name, self.mod_name, self.mod_save_path)
+            modGenerator(self.__images, self.__module_name, self.mod_name, self.mod_save_path, self.__specialties)
 
         # Creating variables for save locations.
         self.mod_name = None
@@ -283,8 +287,10 @@ class Buttons():
 
         return button
 
+class Specialties:
 class modGenerator():
     def __init__(self, main_window: QMainWindow, images: list[object], start_button: QPushButton, upload_button: QPushButton, module_name: str, mod_name: str, save_location: str) -> None:
+    def __init__(self, images: list[object], module_name: str, mod_name: str, save_location: str, specialties: bool) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
         
         Attributes:
@@ -301,6 +307,7 @@ class modGenerator():
         self.__module_name = module_name
         self.__mod_name = mod_name
         self.__save_location = save_location
+        self.__specialties = specialties
 
         self.canvas = self.makeCanvas()
 

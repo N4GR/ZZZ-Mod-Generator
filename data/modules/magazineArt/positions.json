@@ -1,1 +1,96 @@
-{"canvas_size": {"height": 1024, "width": 1024}, "positions": [{"name": "image1", "image_x": 510, "image_y": 4, "image_width": 179, "image_height": 224, "rotation": 0}, {"name": "image2", "image_x": 689, "image_y": 5, "image_width": 163, "image_height": 215, "rotation": 0}, {"name": "image3", "image_x": 858, "image_y": 4, "image_width": 160, "image_height": 210, "rotation": 0}, {"name": "image4", "image_x": 538, "image_y": 248, "image_width": 144, "image_height": 202, "rotation": 0}, {"name": "image5", "image_x": 699, "image_y": 249, "image_width": 146, "image_height": 222, "rotation": 0}, {"name": "image6", "image_x": 858, "image_y": 231, "image_width": 161, "image_height": 219, "rotation": 0}, {"name": "image7", "image_x": 535, "image_y": 474, "image_width": 154, "image_height": 214, "rotation": 0}, {"name": "image8", "image_x": 692, "image_y": 467, "image_width": 164, "image_height": 214, "rotation": 0}, {"name": "image9", "image_x": 862, "image_y": 478, "image_width": 158, "image_height": 211, "rotation": 0}, {"name": "image10", "image_x": 683, "image_y": 707, "image_width": 165, "image_height": 199, "rotation": 0}, {"name": "image11", "image_x": 859, "image_y": 712, "image_width": 164, "image_height": 180, "rotation": 0}]}
+{
+    "canvas_size": {
+        "height": 1024,
+        "width": 1024
+    },
+    "positions": [
+        {
+            "name": "Magazine #1",
+            "image_x": 510,
+            "image_y": 4,
+            "image_width": 179,
+            "image_height": 224,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #2",
+            "image_x": 689,
+            "image_y": 5,
+            "image_width": 163,
+            "image_height": 215,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #3",
+            "image_x": 858,
+            "image_y": 4,
+            "image_width": 160,
+            "image_height": 210,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #4",
+            "image_x": 538,
+            "image_y": 248,
+            "image_width": 144,
+            "image_height": 202,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #5",
+            "image_x": 699,
+            "image_y": 249,
+            "image_width": 146,
+            "image_height": 222,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #6",
+            "image_x": 858,
+            "image_y": 231,
+            "image_width": 161,
+            "image_height": 219,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #7",
+            "image_x": 535,
+            "image_y": 474,
+            "image_width": 154,
+            "image_height": 214,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #8",
+            "image_x": 692,
+            "image_y": 467,
+            "image_width": 164,
+            "image_height": 214,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #9",
+            "image_x": 862,
+            "image_y": 478,
+            "image_width": 158,
+            "image_height": 211,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #10",
+            "image_x": 683,
+            "image_y": 707,
+            "image_width": 165,
+            "image_height": 199,
+            "rotation": 0
+        },
+        {
+            "name": "Magazine #11",
+            "image_x": 859,
+            "image_y": 712,
+            "image_width": 164,
+            "image_height": 180,
+            "rotation": 0
+        }
+    ]
+}

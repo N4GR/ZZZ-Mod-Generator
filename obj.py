@@ -1,6 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont
-
-import json
+from imports import *
 
 from config.paths import *
 from config.assets import font
@@ -105,8 +103,8 @@ class defaultImage():
         # Adding text
         text = self.__data["name"]
 
-        font_size = 20
-        margin = 20
+        font_size = 4
+        margin = int(width * 0.1)
 
         text_color = (255, 255, 255)
         text_font = ImageFont.truetype(font().inpin,
@@ -121,6 +119,7 @@ class defaultImage():
             text_width = bbox[2] - bbox[0]
 
             if text_width + margin * 2 > width:
+                print(text_width + margin * 2)
                 break
 
             font_size += 1

@@ -296,46 +296,6 @@ class Buttons():
     def restartButton(self):
         pass
 
-class Specialties:
-    class boxArt():
-        def __init__(self, canvas: Image.Image, canvas_data: obj.Canvas) -> None:
-            self.canvas = canvas
-            self.canvas_data = canvas_data
-
-        def start(self):
-            for image in self.canvas_data.images:
-                # Placing the side cover (Just the same image moved over slightly.)
-                res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
-                self.canvas.paste(res_image, (image.x + 35, image.y))
-
-                # Placing the bottom of boxes
-                drawing = ImageDraw.Draw(self.canvas)
-                box_coords = [image.x, image.y + image.height, image.x + image.width + 35, image.y + image.height + 27] # (x0, y0, x1, y1)
-
-                # Getting most common colour
-                res_image.thumbnail((200, 200))
-                common_col_image = res_image.convert("RGB")
-
-                pixels = list(common_col_image.getdata())
-                # Filter out pure black and pure white pixels
-                filtered_pixels = [pixel for pixel in pixels if pixel != (0, 0, 0) and pixel != (255, 255, 255)]
-
-                pixel_count = Counter(filtered_pixels)
-
-                most_common_rgb = pixel_count.most_common(1)[0][0]
-                print(most_common_rgb)
-
-                drawing.rectangle(box_coords, fill = most_common_rgb)
-            
-            return self.canvas
-
-        def end(self):
-            box_notches = Image.open("data\\modules\\boxArt\\additional\\notches.png")
-            box_notches = box_notches.convert("RGBA")
-            self.canvas.paste(box_notches, (0, 0), box_notches)
-
-            return self.canvas
-
 class modGenerator():
     def __init__(self, images: list[object], module_name: str, mod_name: str, save_location: str, specialties: bool) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
@@ -352,12 +312,23 @@ class modGenerator():
         self.__save_location = save_location
         self.__specialties = specialties
 
-        self.canvas = self.makeCanvas()
+        self.specialties = Specialties()
+        if self.__specialties is True:
+            self.special_method = getattr(self.specialties, self.__module_name)
+
+        self.canvas, self.special_class = self.makeCanvas()
 
         self.mod_location = self.makeFolder()
 
-        self.DDSLocation = self.convertToDDS(self.canvas)
-        self.INILocation = self.saveINI()
+        if self.special_class.converting is True:
+            conversion_data = self.special_class.conversion()
+        else:
+            self.DDSLocation = self.convertToDDS(self.canvas)
+
+        if self.special_class.ini is True:
+            self.special_class.INI(conversion_data, self.__mod_name)
+        else:
+            self.INILocation = self.saveINI()
 
     def makeCanvas(self) -> Image.Image:
         '''A canvas function to create a canvas with Image.new()'''
@@ -365,10 +336,12 @@ class modGenerator():
         canvas = canvas_data.background
 
         # If the mod contains anything that is out of the ordinary, this will call it from Specialties.
-        specialties = Specialties()
         if self.__specialties is True:
-            method = getattr(specialties, self.__module_name)
-            canvas = method(canvas, canvas_data).start()
+            special = self.special_method(canvas,
+                                          canvas_data,
+                                          f"{self.__save_location}\\{self.__mod_name}")
+            if special.starting is True:
+                canvas = special.start()
                 
         for image in canvas_data.images:
             res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
@@ -377,9 +350,15 @@ class modGenerator():
             canvas.paste(rot_image, (image.x, image.y))
 
         if self.__specialties is True:
-            canvas = method(canvas, canvas_data).end()
+            special = self.special_method(canvas,
+                                          canvas_data,
+                                          f"{self.__save_location}\\{self.__mod_name}")
+            if special.ending is True:
+                canvas = special.end()
 
-        return canvas
+            return canvas, special
+        
+        return canvas, False
     
     def makeFolder(self) -> str:
         mod_path = f"{self.__save_location}\\{self.__mod_name}"

@@ -106,12 +106,13 @@ class defaultImage():
         text = self.__data["name"]
 
         font_size = 20
+        margin = 20
 
         text_color = (255, 255, 255)
         text_font = ImageFont.truetype(font().inpin,
                                        font_size)
 
-        # Adjusting image to fill image width with a 10 pixel margin.
+        # Adjusting image to fill image width with a pixel margin.
         while True:
             bbox = draw.textbbox((0, 0),
                                  text,
@@ -119,7 +120,7 @@ class defaultImage():
             
             text_width = bbox[2] - bbox[0]
 
-            if text_width + 10 * 2 > width:
+            if text_width + margin * 2 > width:
                 break
 
             font_size += 1

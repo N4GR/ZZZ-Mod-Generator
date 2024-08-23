@@ -47,6 +47,7 @@ class N4QImageWithText(QWidget):
         # Creating image label
         if type == "image":
             img = Image.open(image_path)
+            img = img.convert("RGBA")
 
         img.thumbnail((width, height), Image.Resampling.LANCZOS)
 

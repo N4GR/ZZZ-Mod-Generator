@@ -1,10 +1,9 @@
-import os
-import json
+from imports import *
 
+# Local imports
 from config.paths import *
-
-from PIL.ImageQt import ImageQt
-from PIL import Image
+import modules.agentIcons
+import modules.agentIcons.init
 
 class module():
     def __init__(self) -> None:
@@ -48,3 +47,6 @@ class moduleFunctions:
     
     def magazineArt(main_window: QMainWindow):
         modules.magazineArt.init.magazineArt(main_window)
+    
+    def agentIcons(main_window: QMainWindow):
+        modules.agentIcons.init.agentIcons(main_window)

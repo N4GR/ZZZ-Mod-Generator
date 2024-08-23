@@ -1,8 +1,4 @@
-import sys, ctypes
-
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton
-from PyQt6.QtGui import QFontDatabase, QFont, QPixmap, QIcon
-from PyQt6.QtCore import QSize, Qt, QPoint
+from imports import *
 
 from config.window import windowConfig
 from config.module import module

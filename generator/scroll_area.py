@@ -1,14 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QScrollArea, QGridLayout, QMainWindow, QToolButton, QLabel, QVBoxLayout
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QPixmap, QIcon, QFont
+from imports import *
 
-from PIL.ImageQt import ImageQt
-from PIL import Image
-
-from config.window import windowConfig
-import math
-import io
-
+# Local imports
 import config.module
 
 class N4QToolButton(QToolButton):

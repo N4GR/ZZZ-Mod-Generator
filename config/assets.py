@@ -1,7 +1,6 @@
-import os
-from PIL import Image
-from PIL.ImageQt import ImageQt
+from imports import *
 
+# Local imports
 from config.paths import *
 
 class button(object):

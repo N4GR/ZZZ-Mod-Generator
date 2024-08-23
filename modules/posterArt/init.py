@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QMainWindow
+from imports import *
 
 from modules.base import uploading
 

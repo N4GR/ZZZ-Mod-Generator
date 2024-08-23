@@ -1,22 +1,11 @@
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErrorMessage, QMessageBox, QInputDialog
-from PyQt6.QtGui import QPixmap, QIcon
-from PyQt6.QtCore import QSize
+from imports import *
 
-from PIL import Image, ImageOps, ImageDraw
-from PIL.ImageQt import ImageQt
-
-import imageio
-
+# Local imports
+from modules.base.specialties import Specialties
 from generator.scroll_area import scrollArea
-import obj
-
-import os
-
 from config import assets
 from config.paths import *
-
-import json
-from collections import Counter
+import obj
 
 BUTTON_ASSETS = assets.button()
 PANEL_ASSETS = assets.panel()

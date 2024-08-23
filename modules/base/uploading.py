@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QMainWindow, QPushButton, QLabel, QFileDialog, QErro
 from PyQt6.QtGui import QPixmap, QIcon
 from PyQt6.QtCore import QSize
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageDraw
 from PIL.ImageQt import ImageQt
 
 import imageio
@@ -16,13 +16,13 @@ from config import assets
 from config.paths import *
 
 import json
+from collections import Counter
 
 BUTTON_ASSETS = assets.button()
 PANEL_ASSETS = assets.panel()
 FONT_ASSETS = assets.font()
 
 class uploading():
-    def __init__(self, main_window: QMainWindow, module_name: str) -> None:
     def __init__(self, main_window: QMainWindow, module_name: str, specialties: bool = False) -> None:
         self.module_name = module_name
 
@@ -40,7 +40,6 @@ class uploading():
         self.scroll_area.addItems(images, initial = True)
 
         # Initialising new buttons
-        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images)
         self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images, specialties = specialties)
 
 class Images():
@@ -65,7 +64,6 @@ class Images():
         return label
 
 class Buttons():
-    def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list) -> None:
     def __init__(self, main_window: QMainWindow, scroll_area: scrollArea, module_name: str, images: list, specialties: bool) -> None:
         '''Buttons class containing and initialising all buttons for base.
 
@@ -78,6 +76,7 @@ class Buttons():
         self.__main_window = main_window
         self.__scroll_area = scroll_area
         self.__module_name = module_name
+        self.__specialties = specialties
 
         # Creates open_images list for self.upload() to add to
         self.open_images = []
@@ -258,7 +257,6 @@ class Buttons():
             self.upload_button.setDisabled(True)
 
             # Pass on to image generator
-            modGenerator(self.__main_window, self.__images, button, self.upload_button, self.__module_name, self.mod_name, self.mod_save_path)
             modGenerator(self.__images, self.__module_name, self.mod_name, self.mod_save_path, self.__specialties)
 
         # Creating variables for save locations.
@@ -288,8 +286,46 @@ class Buttons():
         return button
 
 class Specialties:
+    class boxArt():
+        def __init__(self, canvas: Image.Image, canvas_data: obj.Canvas) -> None:
+            self.canvas = canvas
+            self.canvas_data = canvas_data
+
+        def start(self):
+            for image in self.canvas_data.images:
+                # Placing the side cover (Just the same image moved over slightly.)
+                res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
+                self.canvas.paste(res_image, (image.x + 35, image.y))
+
+                # Placing the bottom of boxes
+                drawing = ImageDraw.Draw(self.canvas)
+                box_coords = [image.x, image.y + image.height, image.x + image.width + 35, image.y + image.height + 27] # (x0, y0, x1, y1)
+
+                # Getting most common colour
+                res_image.thumbnail((200, 200))
+                common_col_image = res_image.convert("RGB")
+
+                pixels = list(common_col_image.getdata())
+                # Filter out pure black and pure white pixels
+                filtered_pixels = [pixel for pixel in pixels if pixel != (0, 0, 0) and pixel != (255, 255, 255)]
+
+                pixel_count = Counter(filtered_pixels)
+
+                most_common_rgb = pixel_count.most_common(1)[0][0]
+                print(most_common_rgb)
+
+                drawing.rectangle(box_coords, fill = most_common_rgb)
+            
+            return self.canvas
+
+        def end(self):
+            box_notches = Image.open("data\\modules\\boxArt\\additional\\notches.png")
+            box_notches = box_notches.convert("RGBA")
+            self.canvas.paste(box_notches, (0, 0), box_notches)
+
+            return self.canvas
+
 class modGenerator():
-    def __init__(self, main_window: QMainWindow, images: list[object], start_button: QPushButton, upload_button: QPushButton, module_name: str, mod_name: str, save_location: str) -> None:
     def __init__(self, images: list[object], module_name: str, mod_name: str, save_location: str, specialties: bool) -> None:
         '''Mod Generator function that will create the modded image, convert it to DDS and then create an INI image.
         
@@ -299,11 +335,7 @@ class modGenerator():
             DDSLocation [str]: Location for where the DDS was saved.
             INILocation [str]: Location for where the INI was saved.
         '''
-        
-        self.__main_window = main_window
         self.__images = images
-        self.__start_button = start_button
-        self.__upload_button = upload_button
         self.__module_name = module_name
         self.__mod_name = mod_name
         self.__save_location = save_location
@@ -316,19 +348,25 @@ class modGenerator():
         self.DDSLocation = self.convertToDDS(self.canvas)
         self.INILocation = self.saveINI()
 
-        self.__start_button.setDisabled(False)
-        self.__upload_button.setDisabled(False)
-
     def makeCanvas(self) -> Image.Image:
         '''A canvas function to create a canvas with Image.new()'''
         canvas_data = obj.Canvas(self.__module_name, self.__images)
         canvas = canvas_data.background
 
+        # If the mod contains anything that is out of the ordinary, this will call it from Specialties.
+        specialties = Specialties()
+        if self.__specialties is True:
+            method = getattr(specialties, self.__module_name)
+            canvas = method(canvas, canvas_data).start()
+                
         for image in canvas_data.images:
             res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
             rot_image = res_image.rotate(image.rotation, expand = True)
         
             canvas.paste(rot_image, (image.x, image.y))
+
+        if self.__specialties is True:
+            canvas = method(canvas, canvas_data).end()
 
         return canvas
     

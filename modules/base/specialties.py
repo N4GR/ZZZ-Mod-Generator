@@ -22,6 +22,7 @@ class Specialties:
             self.starting = True
             self.ending = True
             self.converting = False
+            self.ini = False
 
         def start(self):
             for image in self.__canvas_data.images:
@@ -56,9 +57,6 @@ class Specialties:
             self.__canvas.paste(box_notches, (0, 0), box_notches)
 
             return self.__canvas
-
-        def conversion(self):
-            pass
     
     class agentIcons():
         def __init__(self,
@@ -101,8 +99,6 @@ class Specialties:
             mask = Image.open("data\\modules\\agenticons\\additional\\clipping_mask.png").convert("L")
 
             self.__canvas = Image.composite(self.__canvas, Image.new("RGBA", self.__canvas.size), mask)
-
-            self.__canvas.show()
 
             for image in self.__canvas_data.images:
                 crop_area = (

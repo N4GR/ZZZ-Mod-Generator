@@ -25,22 +25,30 @@ FONT_ASSETS = assets.font()
 class uploading():
     def __init__(self, main_window: QMainWindow, module_name: str, specialties: bool = False) -> None:
         self.module_name = module_name
+        self.main_window = main_window
 
         # Initialising new images
         self.images = Images(main_window)
+        
+        # Initialising new scroll area
+        self.scroll_area, self.images = self.createDefaultScrollArea()
 
-        # Creating list of default images.
+        # Initialising new buttons
+        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = self.images, specialties = specialties)
+    
+    def createDefaultScrollArea(self) -> scrollArea:
+         # Creating list of default images.
         images = []
-        with open(f"{MODULE_PATH}\\{module_name}\\positions.json") as file:
+        with open(f"{MODULE_PATH}\\{self.module_name}\\positions.json") as file:
             for position in json.load(file)["positions"]:
                 images.append(obj.defaultImage(position))
         
         # Initialising new scroll area
-        self.scroll_area = scrollArea(main_window, (683, 460), 5)
-        self.scroll_area.addItems(images, initial = True)
+        scroll_area = scrollArea(self.main_window, (683, 460), 5)
+        scroll_area.addItems(images, initial = True)
 
-        # Initialising new buttons
-        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = images, specialties = specialties)
+        return scroll_area, images
+
 
 class Images():
     def __init__(self, main_window: QMainWindow) -> None:
@@ -284,6 +292,9 @@ class Buttons():
         button.show()
 
         return button
+
+    def restartButton(self):
+        pass
 
 class Specialties:
     class boxArt():

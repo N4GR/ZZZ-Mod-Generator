@@ -235,4 +235,8 @@ if __name__ == "__main__":
 
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(WINDOW.app_id)
 
-    ui()
+    if '--debug' in sys.argv:
+        # If --debug is provided, relaunch the script with the console visible
+        subprocess.run(['python', __file__] + [arg for arg in sys.argv if arg != '--debug'])
+    else:
+        ui()

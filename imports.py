@@ -15,5 +15,3 @@ import json
 import imageio
 import os
 import random
-import sys
-import subprocess

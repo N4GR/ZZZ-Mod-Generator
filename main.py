@@ -181,6 +181,7 @@ class buttons():
             button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.up)))
         
         def func():
+            log.info("Minimise")
             self.main_window.showMinimized()
 
         # Creating button widget
@@ -209,6 +210,7 @@ class buttons():
             button.setIconSize(QSize(64, 64))
 
         def func():
+            log.info("Home")
             self.main_window.deleteLater()
             ui(new = False, position = self.main_window.pos())
 

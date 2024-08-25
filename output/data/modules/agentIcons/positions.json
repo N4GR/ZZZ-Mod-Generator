@@ -1,0 +1,152 @@
+{
+    "canvas_size": {
+        "height": 1000,
+        "width": 1280
+    },
+    "positions": [
+        {
+            "name": "Anby",
+            "image_x": 0,
+            "image_y": 0,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Anton",
+            "image_x": 256,
+            "image_y": 0,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Ben",
+            "image_x": 512,
+            "image_y": 0,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Billy",
+            "image_x": 768,
+            "image_y": 0,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Corin",
+            "image_x": 1024,
+            "image_y": 0,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Ellen",
+            "image_x": 0,
+            "image_y": 250,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Grace",
+            "image_x": 256,
+            "image_y": 250,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Koleda",
+            "image_x": 512,
+            "image_y": 250,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Lucy",
+            "image_x": 768,
+            "image_y": 250,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Lycaon",
+            "image_x": 1024,
+            "image_y": 250,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Nekomata",
+            "image_x": 0,
+            "image_y": 500,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Nicole",
+            "image_x": 256,
+            "image_y": 500,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Piper",
+            "image_x": 512,
+            "image_y": 500,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "QingYi",
+            "image_x": 768,
+            "image_y": 500,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Rina",
+            "image_x": 1024,
+            "image_y": 500,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Soldier11",
+            "image_x": 0,
+            "image_y": 750,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "Soukaku",
+            "image_x": 256,
+            "image_y": 750,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        },
+        {
+            "name": "ZhuYuan",
+            "image_x": 512,
+            "image_y": 750,
+            "image_width": 256,
+            "image_height": 250,
+            "rotation": 0
+        }
+    ]
+}

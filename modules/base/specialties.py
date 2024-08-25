@@ -1,4 +1,5 @@
 from imports import *
+log = setup("SPECIALTIES")
 
 # Local imports
 import obj

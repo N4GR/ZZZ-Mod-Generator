@@ -2,7 +2,7 @@ from imports import *
 log = setup("UPLOADING")
 
 # Local imports
-from modules.base.specialties import Specialties
+from modules.specialties import Specialties
 from generator.scroll_area import scrollArea
 from config import assets
 from config.paths import *

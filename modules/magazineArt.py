@@ -1,7 +1,7 @@
 from imports import *
-log = setup("MAGAZINE ART INIT")
+log = setup("MAGAZINE ART")
 
-from modules.base import uploading
+from modules import uploading
 
 class magazineArt:
     def __init__(self, main_window: QMainWindow) -> None:

@@ -1,7 +1,7 @@
 from imports import *
-log = setup("POSTER ART INIT")
+log = setup("POSTER ART")
 
-from modules.base import uploading
+from modules import uploading
 
 class posterArt():
     def __init__(self, main_window: QMainWindow) -> None:

@@ -1,10 +1,11 @@
 from imports import *
+import modules.battleIcons
 log = setup("MODULE")
 
 # Local imports
 from config.paths import *
 import modules.agentIcons
-import modules.agentIcons.init
+import modules.agentIcons
 
 class module():
     def __init__(self) -> None:
@@ -36,22 +37,22 @@ class module():
 
 from PyQt6.QtWidgets import QMainWindow
 
-import modules.boxArt.init
-import modules.posterArt.init
-import modules.magazineArt.init
+import modules.boxArt
+import modules.posterArt
+import modules.magazineArt
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
         log.info("Box Art")
-        modules.boxArt.init.boxArt(main_window)
+        modules.boxArt.boxArt(main_window)
     
     def posterArt(main_window: QMainWindow):
         log.info(moduleFunctions.posterArt.__name__)
-        modules.posterArt.init.posterArt(main_window)
+        modules.posterArt.posterArt(main_window)
     
     def magazineArt(main_window: QMainWindow):
         log.info("Magazine Art")
-        modules.magazineArt.init.magazineArt(main_window)
+        modules.magazineArt.magazineArt(main_window)
     
     def agentIcons(main_window: QMainWindow):
         log.info("Agent Icons")
-        modules.agentIcons.init.agentIcons(main_window)
+        modules.agentIcons.agentIcons(main_window)

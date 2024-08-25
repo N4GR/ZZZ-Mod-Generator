@@ -1,7 +1,7 @@
 from imports import *
-log = setup("BOX ART INIT")
+log = setup("BOX ART")
 
-from modules.base import uploading
+from modules import uploading
 
 class boxArt:
     def __init__(self, main_window: QMainWindow) -> None:

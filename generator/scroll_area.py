@@ -1,5 +1,4 @@
 from imports import *
-log = setup("SCROLL AREA")
 
 # Local imports
 import config.module

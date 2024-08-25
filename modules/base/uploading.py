@@ -1,5 +1,4 @@
 from imports import *
-log = setup("UPLOADING")
 
 # Local imports
 from modules.base.specialties import Specialties
@@ -140,7 +139,7 @@ class Buttons():
                     img = Image.open(path)
                     img.close()
                 except (IOError, SyntaxError) as e:
-                    log.error(e)
+                    print(e)
                     # Add failed path to failed list
                     failed.append(path)
                     continue
@@ -245,6 +244,7 @@ class Buttons():
                 dir_name = dialog.textValue()
                 dir_name = "".join(c for c in dir_name if c.isalpha() or c.isdigit() or c==' ').rstrip()
                 self.mod_name = dir_name
+                print(self.mod_name)
                 getModLocation()
             else:
                 return
@@ -400,9 +400,9 @@ class modGenerator(QThread):
 
         if not os.path.exists(mod_path):
             os.makedirs(mod_path)
-            log.info(f"Created: {mod_path}")
+            print("Created")
         else:
-            log.error(f"{mod_path} | Already Exists")
+            print("Already exists")
 
         return mod_path
 

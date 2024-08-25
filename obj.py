@@ -1,5 +1,4 @@
 from imports import *
-log = setup("OBJ")
 
 from config.paths import *
 from config.assets import font
@@ -120,6 +119,7 @@ class defaultImage():
             text_width = bbox[2] - bbox[0]
 
             if text_width + margin * 2 > width:
+                print(text_width + margin * 2)
                 break
 
             font_size += 1

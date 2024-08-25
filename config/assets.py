@@ -1,5 +1,4 @@
 from imports import *
-log = setup("ASSETS")
 
 # Local imports
 from config.paths import *

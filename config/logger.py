@@ -7,8 +7,8 @@ class Logger:
         now = datetime.now()
         current_datetime = now.strftime("%d-%m-%Y_%H-%M-%S")
 
-        # Get the logger for PIL.PngImagePlugin and set its level
-        logging.getLogger('PIL.PngImagePlugin').setLevel(logging.WARNING)
+        # Suppress debug logging from PIL
+        logging.getLogger('PIL').setLevel(logging.WARNING)
 
         self.log = logging.getLogger(class_name)
 

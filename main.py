@@ -149,6 +149,7 @@ class buttons():
             button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.up)))
         
         def func():
+            log.info("Close")
             sys.exit()
 
         # Creating button widget

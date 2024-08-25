@@ -147,6 +147,9 @@ class scrollArea():
 
             # Adds module type to scroll area
             if item.type == "module":
+                # Logging
+                log.info(f"adding {item.name} to scroll area.")
+
                 func = getFunc(item.function_name)
                 widget = N4QToolButton(item.name, item.thumbnail)
                 widget.clicked.connect(makeLambda(func))
@@ -154,10 +157,16 @@ class scrollArea():
 
             # Adds image type to scroll area
             if item.type == "image":
+                # Logging
+                log.info(f"adding {item.name} to scroll area.")
+
                 widget = N4QImageWithText(text = f"{item.name}.{item.file_type}", type = "image", image_path = item.path)
 
             # Adds default type to scroll area when uploading.py is called
             if item.type == "default":
+                # Logging
+                log.info(f"adding {item.name} to scroll area.")
+                
                 widget = N4QImageWithText(text = f"{item.name}", type = "default", img = item.image)
 
             # Checks if there is any item there, deletes it if it is.

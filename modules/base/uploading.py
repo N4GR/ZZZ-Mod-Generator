@@ -145,6 +145,9 @@ class Buttons():
                     failed.append(path)
                     continue
 
+                # Logging
+                log.info(f"uploading {path} to {self.__module_name}")
+
                 scroll_image = obj.scrollImages(path)
 
                 x.append(scroll_image)
@@ -154,6 +157,9 @@ class Buttons():
                 self.__images[len(self.open_images) - 1] = obj.addingImage(path)
 
             if self.__maximum_replaced is True:
+                # Logging
+                log.info("Not all images added")
+                
                 error_message = QErrorMessage(self.__main_window)
                 error_message.setWindowTitle("Maximum Images")
                 error_message.showMessage(f"Only {opened_widgets} images can be used, the rest have been skipped.")
@@ -162,6 +168,9 @@ class Buttons():
                 button.setDisabled(True)
 
             if failed != []:
+                for fail in failed:
+                    log.error(f"Corrupt Image: {fail}")
+
                 failed_lst = [f"{x}\n" for x in failed]
                 failed_str = "".join(failed_lst)
 
@@ -245,6 +254,9 @@ class Buttons():
                 dir_name = dialog.textValue()
                 dir_name = "".join(c for c in dir_name if c.isalpha() or c.isdigit() or c==' ').rstrip()
                 self.mod_name = dir_name
+
+                # Logging
+                log.info(f"Setting mod name: [{self.mod_name}]")
                 getModLocation()
             else:
                 return
@@ -266,6 +278,9 @@ class Buttons():
                         QMessageBox.warning(self.__main_window, "Invalid Input", f"{dialog.textValue()} is not a valid directory, please try again.")
                     else:
                         self.mod_save_path = dialog.textValue()
+
+                        # Logging
+                        log.info(f"Setting save path: [{self.mod_save_path}]")
 
                         func()
                         break
@@ -347,6 +362,9 @@ class modGenerator(QThread):
         self.__specialties = specialties
     
     def run(self):
+        # Logging
+        log.info(f"Generating [{self.__mod_name}]({self.__module_name}) -> {self.__save_location}")
+
         self.specialties = Specialties()
         if self.__specialties is True:
             self.special_method = getattr(self.specialties, self.__module_name)
@@ -355,13 +373,19 @@ class modGenerator(QThread):
 
         self.mod_location = self.makeFolder()
 
-        if self.special_class.converting is True:
-            conversion_data = self.special_class.conversion()
+        if self.__specialties is True:
+            if self.special_class.converting is True:
+                conversion_data = self.special_class.conversion()
+            else:
+                self.DDSLocation = self.convertToDDS(self.canvas)
         else:
             self.DDSLocation = self.convertToDDS(self.canvas)
 
-        if self.special_class.ini is True:
-            self.special_class.INI(conversion_data, self.__mod_name)
+        if self.__specialties is True:
+            if self.special_class.ini is True:
+                self.special_class.INI(conversion_data, self.__mod_name)
+            else:
+                self.INILocation = self.saveINI()
         else:
             self.INILocation = self.saveINI()
 

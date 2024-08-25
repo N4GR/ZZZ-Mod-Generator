@@ -15,11 +15,12 @@ import json
 import imageio
 import os
 import random
+import logging
 
 # Local imports
 from config import logger
 
-def setup(name: str) -> logger.Logger:
+def setup(name: str) -> logging.Logger:
     logging = logger.Logger(name)
     log = logging.log
 

@@ -1,4 +1,5 @@
 from imports import *
+log = setup("MODULE")
 
 # Local imports
 from config.paths import *
@@ -40,13 +41,17 @@ import modules.posterArt.init
 import modules.magazineArt.init
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
+        log.info("Box Art")
         modules.boxArt.init.boxArt(main_window)
     
     def posterArt(main_window: QMainWindow):
+        log.info(moduleFunctions.posterArt.__name__)
         modules.posterArt.init.posterArt(main_window)
     
     def magazineArt(main_window: QMainWindow):
+        log.info("Magazine Art")
         modules.magazineArt.init.magazineArt(main_window)
     
     def agentIcons(main_window: QMainWindow):
+        log.info("Agent Icons")
         modules.agentIcons.init.agentIcons(main_window)

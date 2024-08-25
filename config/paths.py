@@ -1,4 +1,5 @@
 from imports import *
+log = setup("PATHS")
 
 WORKING_DIRECTORY = os.getcwd()
 

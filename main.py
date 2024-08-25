@@ -1,4 +1,5 @@
 from imports import *
+log = setup("MAIN")
 
 from config.window import windowConfig
 from config.module import module

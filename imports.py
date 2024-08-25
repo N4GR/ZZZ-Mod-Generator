@@ -15,3 +15,14 @@ import json
 import imageio
 import os
 import random
+
+# Local imports
+from config import logger
+
+def setup(name: str) -> logger.Logger:
+    logging = logger.Logger(name)
+    log = logging.log
+
+    sys.excepthook = logging.custom_excepthook
+
+    return log

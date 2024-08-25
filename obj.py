@@ -134,7 +134,7 @@ class defaultImage():
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
         text_x = (width - text_width) // 2
-        text_y = (height - text_height) // 2
+        text_y = (height - text_height) // 2 - 15
 
         # Draw the text
         draw.text((text_x, text_y),

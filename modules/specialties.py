@@ -16,9 +16,15 @@ class AgentHash:
 
 class Specialties:
     class boxArt():
-        def __init__(self, canvas: Image.Image, canvas_data: obj.Canvas, save_location: str) -> None:
+        def __init__(self,
+                     canvas: Image.Image,
+                     canvas_data: obj.Canvas,
+                     save_location: str,
+                     module_name: str) -> None:
             self.__canvas = canvas
             self.__canvas_data = canvas_data
+            self.__save_location = save_location
+            self.__module_name = module_name
 
             self.starting = True
             self.ending = True
@@ -46,7 +52,6 @@ class Specialties:
                 pixel_count = Counter(filtered_pixels)
 
                 most_common_rgb = pixel_count.most_common(1)[0][0]
-                print(most_common_rgb)
 
                 drawing.rectangle(box_coords, fill = most_common_rgb)
             

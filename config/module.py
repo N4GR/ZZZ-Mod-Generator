@@ -1,11 +1,8 @@
 from imports import *
-import modules.battleIcons
 log = setup("MODULE")
 
 # Local imports
 from config.paths import *
-import modules.agentIcons
-import modules.agentIcons
 
 class module():
     def __init__(self) -> None:
@@ -42,6 +39,7 @@ import modules.posterArt
 import modules.magazineArt
 import modules.agentIcons
 import modules.battleIcons
+import modules.chainIcons
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
         log.info("Box Art")
@@ -62,3 +60,7 @@ class moduleFunctions:
     def battleIcons(main_window: QMainWindow):
         log.info("Battle Icons")
         modules.battleIcons.battleIcons(main_window)
+
+    def chainIcons(main_window: QMainWindow):
+        log.info("Chain Icons")
+        modules.chainIcons.chainIcons(main_window)

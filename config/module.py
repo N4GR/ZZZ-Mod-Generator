@@ -6,6 +6,7 @@ from config.paths import *
 
 class module():
     def __init__(self) -> None:
+        """Module class which contains a list of module objects."""
         module_directories = os.listdir(MODULE_PATH)
 
         self.list = []
@@ -43,25 +44,55 @@ import modules.battleIcons
 import modules.chainIcons
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
+        """Box Art module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info("Box Art")
         modules.boxArt.boxArt(main_window)
     
     def posterArt(main_window: QMainWindow):
+        """Poster Art module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info(moduleFunctions.posterArt.__name__)
         modules.posterArt.posterArt(main_window)
     
     def magazineArt(main_window: QMainWindow):
+        """Magazine Art module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info("Magazine Art")
         modules.magazineArt.magazineArt(main_window)
     
     def agentIcons(main_window: QMainWindow):
+        """Agent Icons module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info("Agent Icons")
         modules.agentIcons.agentIcons(main_window)
     
     def battleIcons(main_window: QMainWindow):
+        """Battle Icons module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info("Battle Icons")
         modules.battleIcons.battleIcons(main_window)
 
     def chainIcons(main_window: QMainWindow):
+        """Chain Icons module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
         log.info("Chain Icons")
         modules.chainIcons.chainIcons(main_window)

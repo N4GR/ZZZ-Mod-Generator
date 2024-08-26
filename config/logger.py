@@ -5,6 +5,11 @@ import sys
 class Logger:
     def __init__(self,
                  class_name: str) -> None:
+        """Logger function used to initialise logging.
+
+        Args:
+            class_name (str): Name of the class / file that's currently being worked on.
+        """
         now = datetime.now()
         current_datetime = now.strftime("%d-%m-%Y_%H-%M-%S")
 
@@ -26,6 +31,7 @@ class Logger:
                           exc_type,
                           exc_value,
                           exc_traceback):
+        """Custom excepthook that captures excepts and passes it to the log."""
         if issubclass(exc_type,
                       KeyboardInterrupt):
             # Allow the program to terminate on a keyboard interrupt

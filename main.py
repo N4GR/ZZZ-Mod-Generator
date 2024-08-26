@@ -12,6 +12,7 @@ import generator.scroll_area
 
 class MainWindow(QMainWindow):
     def __init__(self):
+        """QMainWindow subclass creating the main PyQt6 window thread."""
         super(MainWindow, self).__init__()
 
         self.setFixedSize(WINDOW.width, WINDOW.height)
@@ -32,6 +33,11 @@ class MainWindow(QMainWindow):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
     
     def mousePressEvent(self, event):
+        """A function used to handle anything when the mouse is pressed.
+
+        Args:
+            event (_type_): Event that's being issued.
+        """
         if event.button() == Qt.MouseButton.LeftButton:
             if event.pos().y() < 100:
                 self.offset = event.pos()
@@ -39,6 +45,11 @@ class MainWindow(QMainWindow):
             super().mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
+        """A function used to handle anything when the mouse is moved.
+
+        Args:
+            event (_type_): Event that's being issued.
+        """
         try:
             if self.offset is not None:
                 pass
@@ -51,6 +62,11 @@ class MainWindow(QMainWindow):
             super().mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
+        """A function used to handle anythign when the mouse is released.
+
+        Args:
+            event (_type_): Event that's being issued.
+        """
         self.offset = None
         super().mouseReleaseEvent(event)
 
@@ -87,11 +103,17 @@ class ui():
         if new is True: self.createExit()
     
     def createApp(self) -> QApplication:
+        """Function to create a QApplication.
+
+        Returns:
+            QApplication: Object made when the application is generated.
+        """
         main_app = QApplication(sys.argv)
 
         return main_app
     
     def createExit(self):
+        """A function that exits the main application."""
         sys.exit(self.main_app.exec())
 
 class text():
@@ -107,7 +129,12 @@ class text():
         
         self.title = self.titleText()
     
-    def titleText(self):
+    def titleText(self) -> QLabel:
+        """A function made to set the title of the main window.
+
+        Returns:
+            QLabel: the label created for the title.
+        """
         font = QFont("inpin", 18)
         font.setBold(True)
 
@@ -136,6 +163,11 @@ class buttons():
         self.home = self.homeButton()
         
     def exitButton(self) -> QPushButton:
+        """Exit button that's created to handle the exitting of the program when it's clicked.
+
+        Returns:
+            QPushButton: Button created for the exit button.
+        """
         def pressed():
             '''
             Changes the button icon on press.
@@ -149,6 +181,7 @@ class buttons():
             button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.up)))
         
         def func():
+            """Function called when the exit button is clicked."""
             log.info("Close")
             sys.exit()
 
@@ -170,6 +203,11 @@ class buttons():
         return button
     
     def minimiseButton(self) -> QPushButton:
+        """Function to create and set any function for minimising.
+
+        Returns:
+            QPushButton: Object created for the button.
+        """
         def pressed():
             '''
             Changes the button icon on press.
@@ -183,6 +221,7 @@ class buttons():
             button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.up)))
         
         def func():
+            """Functiopn called when the minimise button is pressed."""
             log.info("Minimise")
             self.main_window.showMinimized()
 
@@ -204,17 +243,25 @@ class buttons():
         return button
 
     def homeButton(self) -> QPushButton:
+        """Home button which will send the user back home.
+
+        Returns:
+            QPushButton: Object created for home.
+        """
         def pressed():
+            """Function to handle when the user presses down on the home button."""
             button.setGeometry(22, 22,
                                60, 60)
             button.setIconSize(QSize(60, 60))
         
         def released():
+            """Function to handle when the user releases their mouse from the home button."""
             button.setGeometry(20, 20,
                                64, 64)
             button.setIconSize(QSize(64, 64))
 
         def func():
+            """Function called when the minimise button is clicked."""
             log.info("Home")
             self.main_window.deleteLater()
             ui(new = False, position = self.main_window.pos())

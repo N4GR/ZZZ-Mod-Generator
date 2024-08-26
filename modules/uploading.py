@@ -17,6 +17,13 @@ class uploading():
                  main_window: QMainWindow,
                  module_name: str,
                  specialties: bool = False) -> None:
+        """Uploading function that is called to create a mod that requires any kind of uploading of images.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object crated from the main PyQt6 application.
+            module_name (str): Name of the module the user clicked on from the main PyQt6 application.
+            specialties (bool, optional): Specialties booleon if the clicked module contains any special requirements. Defaults to False.
+        """
         self.module_name = module_name
         self.main_window = main_window
 
@@ -27,9 +34,19 @@ class uploading():
         self.scroll_area, self.other_images = self.createDefaultScrollArea()
 
         # Initialising new buttons
-        self.buttons = Buttons(main_window, self.scroll_area, module_name = module_name, images = self.other_images, specialties = specialties, window_images = self.window_images)
+        self.buttons = Buttons(main_window,
+                               self.scroll_area,
+                               module_name = module_name,
+                               images = self.other_images,
+                               specialties = specialties,
+                               window_images = self.window_images)
     
     def createDefaultScrollArea(self) -> scrollArea:
+        """Function to create a scroll area.
+
+        Returns:
+            scrollArea: scrollArea that's generated for the module.
+        """
          # Creating list of default images.
         images = []
         with open(f"{MODULE_PATH}\\{self.module_name}\\positions.json") as file:
@@ -37,8 +54,11 @@ class uploading():
                 images.append(obj.defaultImage(position))
         
         # Initialising new scroll area
-        scroll_area = scrollArea(self.main_window, (683, 460), 5)
-        scroll_area.addItems(images, initial = True)
+        scroll_area = scrollArea(self.main_window,
+                                 (683, 460),
+                                 5)
+        scroll_area.addItems(images,
+                             initial = True)
 
         return scroll_area, images
 
@@ -56,13 +76,17 @@ class Images():
         self.side_panel = self.sidePanel()
         self.loading_animation = self.loadingAnimation()
     
-    def sidePanel(self):
+    def sidePanel(self) -> QLabel:
+        """Side panel function that creates a QLabel and assigns the panel image to it.
+
+        Returns:
+            QLabel: Created for the side panel.
+        """
         label = QLabel(self.__main_window)
         pixmap = QPixmap.fromImage(PANEL_ASSETS.right_panel)
 
         label.setPixmap(pixmap)
-        label.setGeometry(690,
-                          108,
+        label.setGeometry(690, 108,
                           PANEL_ASSETS.right_panel.width(),
                           PANEL_ASSETS.right_panel.height())
 
@@ -70,7 +94,12 @@ class Images():
 
         return label
     
-    def loadingAnimation(self):
+    def loadingAnimation(self) -> QLabel:
+        """Loading animation function that creates the loading animation that will be displayed when the mod is being generated.
+
+        Returns:
+            QLabel: Object of the label that's generated.
+        """
         label = QLabel(self.__main_window)
         label.setFixedSize(52, 52)
         movie = QMovie(f"{PANEL_PATH}\\loading.gif")
@@ -93,13 +122,16 @@ class Buttons():
                  images: list,
                  specialties: bool,
                  window_images: Images) -> None:
-        
-        '''Buttons class containing and initialising all buttons for base.
+        """Buttons class containing all the button objects created for the uploading function.
 
-        Attributes:
-            upload_button [QPushButton]: Upload button of the base UI.
-            open_images [list[object]]: List of scrollImages objects of currently open images.
-        '''
+        Args:
+            main_window (QMainWindow): Main Window generated from the PyQt6 main thread.
+            scroll_area (scrollArea): Scroll Area created for the default uploading area.
+            module_name (str): Name of the module the user clicked on.
+            images (list): A list of images required for the buttons.
+            specialties (bool): The specialties booleon if the module contains any special actions.
+            window_images (Images): Images object of the images on the window.
+        """
         # Creates private attributes
         self.__images = images
         self.__main_window = main_window
@@ -115,7 +147,12 @@ class Buttons():
         self.upload_button = self.uploadButton()
         self.start_button = self.startButton()
     
-    def uploadButton(self):
+    def uploadButton(self) -> QPushButton:
+        """UploadButton function used to create the upload button and handle its functions.
+
+        Returns:
+            QPushButton: Button created for uploading.
+        """
         def pressed():
             '''
             Changes the button icon on press.
@@ -129,7 +166,10 @@ class Buttons():
             button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.up)))
 
         def func():
-            files = QFileDialog.getOpenFileUrls(self.__main_window, "Open File", filter = "Image Files (*.png *.jpg)")
+            """Main function called when the upload button is clicked."""
+            files = QFileDialog.getOpenFileUrls(self.__main_window,
+                                                "Open File",
+                                                filter = "Image Files (*.png *.jpg)")
 
             x = []
             failed = []
@@ -197,7 +237,8 @@ class Buttons():
 
         button = QPushButton(self.__main_window)
         button.setText("")
-        button.setGeometry(715, 150, 52, 52)
+        button.setGeometry(715, 150,
+                           52, 52)
 
         button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.upload.up)))
         button.setIconSize(QSize(52, 52))
@@ -211,7 +252,12 @@ class Buttons():
 
         return button
     
-    def startButton(self):
+    def startButton(self) -> QPushButton:
+        """Start Button function used to create the start button to create the mod.
+
+        Returns:
+            QPushButton: Button object created that's placed in the uploading window.
+        """
         def pressed():
             '''
             Changes the button icon on press.
@@ -303,8 +349,7 @@ class Buttons():
             self.thread.finished.connect(ShowWidgets)
 
             self.thread.start()
-
-        
+   
         def HideWidgets():
             # Disables start and upload buttons.
             button.setDisabled(True)
@@ -374,6 +419,7 @@ class modGenerator(QThread):
         self.__specialties = specialties
     
     def run(self):
+        """Run function used to initiate the mod generator."""
         # Logging
         log.info(f"Generating [{self.__mod_name}]({self.__module_name}) -> {self.__save_location}")
 
@@ -404,7 +450,11 @@ class modGenerator(QThread):
             self.INILocation = self.saveINI()
 
     def makeCanvas(self) -> Image.Image:
-        '''A canvas function to create a canvas with Image.new()'''
+        """Function to create the canvas image that will be used for the generator.
+
+        Returns:
+            Image.Image: PIL.Image object returned for the canvas.
+        """
         canvas_data = obj.Canvas(self.__module_name,
                                  self.__images)
         canvas = canvas_data.background
@@ -440,6 +490,11 @@ class modGenerator(QThread):
         return canvas, False
     
     def makeFolder(self) -> str:
+        """Function for creating the directory where the user wants to put the mod.
+
+        Returns:
+            str: The save path of where the user selected.
+        """
         mod_path = f"{self.__save_location}\\{self.__mod_name}"
 
         if not os.path.exists(mod_path):
@@ -451,7 +506,14 @@ class modGenerator(QThread):
         return mod_path
 
     def convertToDDS(self, canvas: Image.Image) -> str:
-        '''Convert canvas image to DDS and save it to a location.'''
+        """Function to convert a PIL.Image object into a DDS file.
+
+        Args:
+            canvas (Image.Image): Canvas that is created by the makeCanvas function.
+
+        Returns:
+            str: The DDS save location string.
+        """
 
         canvas = ImageOps.flip(canvas)
         canvas = canvas.convert("RGBA")
@@ -465,11 +527,20 @@ class modGenerator(QThread):
         return output_path
 
     def saveINI(self) -> str:
+        """SaveINI function that will generate an INI file towards a location.
+
+        Returns:
+            str: The lines used when saving the INI file.
+        """
         def getHash() -> str:
+            """Get Hash function to return the hash string from data.json.
+
+            Returns:
+                str: The hash required for the INI.
+            """
             with open(f"{MODULE_PATH}\\{self.__module_name}\\data.json") as file:
                 return json.load(file)["hash"]
 
-        '''Creates an INI file and saves it to a location.'''
         file_path = f"{self.mod_location}\\{self.__mod_name}"
 
         lines = (
@@ -492,3 +563,5 @@ class modGenerator(QThread):
 
         with open(f"{file_path}.ini", "w+") as file:
             file.writelines(lines)
+        
+        return lines

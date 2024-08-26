@@ -36,6 +36,12 @@ class button():
             self,
             up: dict,
             down: dict) -> None:
+        """Button object containing the up and down image object.
+
+        Args:
+            up (dict): Dictionary of the up button.
+            down (dict): Dictionary of the down button.
+        """
         
         self.up = image(up)
         self.down = image(down)
@@ -44,6 +50,11 @@ class scrollImages():
     def __init__(
             self,
             path: str) -> None:
+        """ScrollImages object for the scroll images.
+
+        Args:
+            path (str): Path used to create the scroll images.
+        """
         
         x = path.split("/")[-1].split(".")
 
@@ -56,6 +67,11 @@ class addingImage():
     def __init__(
             self,
             path: str) -> None:
+        """Adding image object for adding images.
+
+        Args:
+            path (str): Path to the image.
+        """
         
         x = path.split("/")[-1].split(".")
 
@@ -149,6 +165,12 @@ class Canvas():
             self,
             module_name: str,
             image_asset_data: list) -> None:
+        """Canvas object used to generate the mod.
+
+        Args:
+            module_name (str): Name of the module the user wants to generate.
+            image_asset_data (list): List of images the user wants to use to generate their mod.
+        """
         
         self.__module_name = module_name
         self.__image_asset_data = image_asset_data

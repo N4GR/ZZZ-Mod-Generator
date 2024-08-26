@@ -21,6 +21,14 @@ class Specialties:
                      canvas_data: obj.Canvas,
                      save_location: str,
                      module_name: str) -> None:
+            """Box Art specialty function called for a special addition to the mod.
+
+            Args:
+                canvas (Image.Image): Canvas made for generating the image.
+                canvas_data (obj.Canvas): Canvas object from obj that contains information about the canvas.
+                save_location (str): Save location of where the user wants to save the mod.
+                module_name (str): Name of the module being called as a function.
+            """
             self.__canvas = canvas
             self.__canvas_data = canvas_data
             self.__save_location = save_location
@@ -79,6 +87,14 @@ class Specialties:
                      canvas_data: obj.Canvas,
                      save_location: str,
                      module_name: str) -> None:
+            """Agent icons specialty function called for a special addition to the mod.
+
+            Args:
+                canvas (Image.Image): Canvas made for generating the image.
+                canvas_data (obj.Canvas): Canvas object from obj that contains information about the canvas.
+                save_location (str): Save location of where the user wants to save the mod.
+                module_name (str): Name of the module being called as a function.
+            """
             self.__canvas = canvas
             self.__canvas_data = canvas_data
             self.__save_location = save_location
@@ -111,6 +127,14 @@ class Specialties:
                      canvas_data: obj.Canvas,
                      save_location: str,
                      module_name: str) -> None:
+            """Battle Icons specialty function called for a special addition to the mod.
+
+            Args:
+                canvas (Image.Image): Canvas made for generating the image.
+                canvas_data (obj.Canvas): Canvas object from obj that contains information about the canvas.
+                save_location (str): Save location of where the user wants to save the mod.
+                module_name (str): Name of the module being called as a function.
+            """
             self.__canvas = canvas
             self.__canvas_data = canvas_data
             self.__save_location = save_location
@@ -144,6 +168,14 @@ class Specialties:
                      canvas_data: obj.Canvas,
                      save_location: str,
                      module_name: str) -> None:
+            """Chain Icons specialty function called for a special addition to the mod.
+
+            Args:
+                canvas (Image.Image): Canvas made for generating the image.
+                canvas_data (obj.Canvas): Canvas object from obj that contains information about the canvas.
+                save_location (str): Save location of where the user wants to save the mod.
+                module_name (str): Name of the module being called as a function.
+            """
             self.__canvas = canvas
             self.__canvas_data = canvas_data
             self.__save_location = save_location
@@ -185,6 +217,11 @@ class Icons:
         self.data_path = f"data\\modules\\{self.__module_name}\\additional"
     
     def conversion(self) -> list[AgentHash]:
+        """Conversion function called to interrupt the main convesion - this is used for Icons.
+
+        Returns:
+            list[AgentHash]: A list of agent hash objects.
+        """
         # Getting hashes
         agents = []
         with open(f"{self.data_path}\\hashes.json") as file:
@@ -222,7 +259,16 @@ class Icons:
 
     def INI(self,
             agents: list[AgentHash],
-            mod_name: str):
+            mod_name: str) -> str:
+        """INI function called to interrupt the ini generation - this is used for Icons.
+
+        Args:
+            agents (list[AgentHash]): A list of agent hash objects containing the icon hash.
+            mod_name (str): Name of the mod the user wants to generate.
+
+        Returns:
+            ini (str): The string used to generate the INI file.
+        """
 
         ini = ""
         for agent in agents:

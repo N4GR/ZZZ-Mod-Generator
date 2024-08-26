@@ -11,6 +11,5 @@ UI_PATH = f"{ASSET_PATH}\\ui"
 BUTTON_PATH = f"{UI_PATH}\\buttons"
 FONT_PATH = f"{UI_PATH}\\fonts"
 PANEL_PATH = f"{UI_PATH}\\panels"
-#
 
 MODULE_PATH = f"{WORKING_DIRECTORY}\\data\\modules"

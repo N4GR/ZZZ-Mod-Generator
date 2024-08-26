@@ -5,7 +5,9 @@ log = setup("SCROLL AREA")
 import config.module
 
 class N4QToolButton(QToolButton):
-    def __init__(self, button_name: str, button_icon: ImageQt) -> None:
+    def __init__(self,
+                 button_name: str,
+                 button_icon: ImageQt) -> None:
         super(N4QToolButton, self).__init__()
 
         font = QFont("inpin", 12)
@@ -25,7 +27,11 @@ class N4QToolButton(QToolButton):
         self.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
 
 class N4QImageWithText(QWidget):
-    def __init__(self, text: str, type: str, image_path: str = None, img: object = None) -> None:
+    def __init__(self,
+                 text: str,
+                 type: str,
+                 image_path: str = None,
+                 img: object = None) -> None:
         '''QWidget object containing an image QLabel and a text QLabel positioned in a QVBoxLayout for text below images.
         
         Paramteres:
@@ -69,7 +75,10 @@ class N4QImageWithText(QWidget):
         self.setLayout(layout)
 
 class scrollArea():
-    def __init__(self, main_window: QMainWindow, size: tuple[int] = (790, 460), max_column: int = 4) -> None:
+    def __init__(self,
+                 main_window: QMainWindow,
+                 size: tuple[int] = (790, 460),
+                 max_column: int = 4) -> None:
         '''scrollArea class generator for creating scrollable areas within the main UI.
 
         Parameters:
@@ -114,7 +123,9 @@ class scrollArea():
 
         self.max_column = max_column
 
-    def addItems(self, items: list[object], initial: bool = False):
+    def addItems(self,
+                 items: list[object],
+                 initial: bool = False):
         '''Function to add items to a scroll area.
         
         Parameters:
@@ -151,7 +162,8 @@ class scrollArea():
                 log.info(f"adding {item.name} to scroll area.")
 
                 func = getFunc(item.function_name)
-                widget = N4QToolButton(item.name, item.thumbnail)
+                widget = N4QToolButton(item.name,
+                                       item.thumbnail)
                 widget.clicked.connect(makeLambda(func))
                 widget.clicked.connect(self.delete)
 
@@ -160,17 +172,22 @@ class scrollArea():
                 # Logging
                 log.info(f"adding {item.name} to scroll area.")
 
-                widget = N4QImageWithText(text = f"{item.name}.{item.file_type}", type = "image", image_path = item.path)
+                widget = N4QImageWithText(text = f"{item.name}.{item.file_type}",
+                                          type = "image",
+                                          image_path = item.path)
 
             # Adds default type to scroll area when uploading.py is called
             if item.type == "default":
                 # Logging
                 log.info(f"adding {item.name} to scroll area.")
                 
-                widget = N4QImageWithText(text = f"{item.name}", type = "default", img = item.image)
+                widget = N4QImageWithText(text = f"{item.name}",
+                                          type = "default",
+                                          img = item.image)
 
             # Checks if there is any item there, deletes it if it is.
-            remove_widget = self.grid_layout.itemAtPosition(self.row, self.column)
+            remove_widget = self.grid_layout.itemAtPosition(self.row,
+                                                            self.column)
 
             if remove_widget is not None:
                 remove_widget = remove_widget.widget()
@@ -181,7 +198,9 @@ class scrollArea():
                 remove_widget.deleteLater()
 
             # Adds item to the given position
-            self.grid_layout.addWidget(widget, self.row, self.column)
+            self.grid_layout.addWidget(widget,
+                                       self.row,
+                                       self.column)
 
         if initial is True:
             self.column = 0

@@ -34,12 +34,19 @@ class Specialties:
         def start(self):
             for image in self.__canvas_data.images:
                 # Placing the side cover (Just the same image moved over slightly.)
-                res_image = image.image.resize((image.width, image.height), Image.Resampling.LANCZOS)
-                self.__canvas.paste(res_image, (image.x + 35, image.y))
+                res_image = image.image.resize((image.width,
+                                                image.height),
+                                                Image.Resampling.LANCZOS)
+                self.__canvas.paste(res_image,
+                                    (image.x + 35,
+                                     image.y))
 
                 # Placing the bottom of boxes
                 drawing = ImageDraw.Draw(self.__canvas)
-                box_coords = [image.x, image.y + image.height, image.x + image.width + 35, image.y + image.height + 27] # (x0, y0, x1, y1)
+                box_coords = [image.x,
+                              image.y + image.height,
+                              image.x + image.width + 35,
+                              image.y + image.height + 27] # (x0, y0, x1, y1)
 
                 # Getting most common colour
                 res_image.thumbnail((200, 200))
@@ -60,7 +67,9 @@ class Specialties:
         def end(self):
             box_notches = Image.open("data\\modules\\boxArt\\additional\\notches.png")
             box_notches = box_notches.convert("RGBA")
-            self.__canvas.paste(box_notches, (0, 0), box_notches)
+            self.__canvas.paste(box_notches,
+                                (0, 0),
+                                box_notches)
 
             return self.__canvas
 
@@ -126,7 +135,8 @@ class Specialties:
                 agents: list[AgentHash],
                 mod_name: str):
 
-            return self.icons.INI(agents, mod_name)
+            return self.icons.INI(agents,
+                                  mod_name)
     
     class chainIcons():
         def __init__(self,
@@ -158,7 +168,8 @@ class Specialties:
                 agents: list[AgentHash],
                 mod_name: str):
 
-            return self.icons.INI(agents, mod_name)
+            return self.icons.INI(agents,
+                                  mod_name)
 
 class Icons:
     def __init__(self,

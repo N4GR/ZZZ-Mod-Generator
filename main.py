@@ -157,7 +157,8 @@ class buttons():
         button.clicked.connect(func)
         button.pressed.connect(pressed)
         button.released.connect(released)
-        button.setGeometry(690, 30, 80, 52)
+        button.setGeometry(690, 30,
+                           80, 52)
 
         # Setting icon
         button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.exit.up)))
@@ -190,7 +191,8 @@ class buttons():
         button.clicked.connect(func)
         button.pressed.connect(pressed)
         button.released.connect(released)
-        button.setGeometry(600, 30, 80, 52)
+        button.setGeometry(600, 30,
+                           80, 52)
 
         # Setting icon
         button.setIcon(QIcon(QPixmap.fromImage(BUTTON_ASSETS.minimise.up)))
@@ -203,11 +205,13 @@ class buttons():
 
     def homeButton(self) -> QPushButton:
         def pressed():
-            button.setGeometry(22, 22, 60, 60)
+            button.setGeometry(22, 22,
+                               60, 60)
             button.setIconSize(QSize(60, 60))
         
         def released():
-            button.setGeometry(20, 20, 64, 64)
+            button.setGeometry(20, 20,
+                               64, 64)
             button.setIconSize(QSize(64, 64))
 
         def func():
@@ -220,7 +224,8 @@ class buttons():
         button.clicked.connect(func)
         button.pressed.connect(pressed)
         button.released.connect(released)
-        button.setGeometry(20, 20, 64, 64)
+        button.setGeometry(20, 20,
+                           64, 64)
 
         # Setting icon
         button.setIcon(QIcon(QPixmap.fromImage(PANEL_ASSETS.icon)))

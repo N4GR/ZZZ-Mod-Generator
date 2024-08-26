@@ -13,7 +13,8 @@ class module():
             self.list.append(self.moduleObject(f"{MODULE_PATH}\\{path}"))
 
     class moduleObject():
-        def __init__(self, path: str) -> None:
+        def __init__(self,
+                     path: str) -> None:
             '''
             Object constructur for the module dictionary.
 

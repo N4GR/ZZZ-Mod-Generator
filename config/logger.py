@@ -3,7 +3,8 @@ import logging
 import sys
 
 class Logger:
-    def __init__(self, class_name: str) -> None:
+    def __init__(self,
+                 class_name: str) -> None:
         now = datetime.now()
         current_datetime = now.strftime("%d-%m-%Y_%H-%M-%S")
 
@@ -21,9 +22,18 @@ class Logger:
             ]
         )
     
-    def custom_excepthook(self, exc_type, exc_value, exc_traceback):
-        if issubclass(exc_type, KeyboardInterrupt):
+    def custom_excepthook(self,
+                          exc_type,
+                          exc_value,
+                          exc_traceback):
+        if issubclass(exc_type,
+                      KeyboardInterrupt):
             # Allow the program to terminate on a keyboard interrupt
-            sys.__excepthook__(exc_type, exc_value, exc_traceback)
+            sys.__excepthook__(exc_type,
+                               exc_value,
+                               exc_traceback)
             return
-        logging.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+        logging.error("Uncaught exception",
+                      exc_info = (exc_type,
+                                  exc_value,
+                                  exc_traceback))

@@ -398,7 +398,8 @@ class modGenerator(QThread):
         if self.__specialties is True:
             special = self.special_method(canvas,
                                           canvas_data,
-                                          f"{self.__save_location}\\{self.__mod_name}")
+                                          f"{self.__save_location}\\{self.__mod_name}",
+                                          self.__module_name)
             if special.starting is True:
                 canvas = special.start()
                 
@@ -411,7 +412,8 @@ class modGenerator(QThread):
         if self.__specialties is True:
             special = self.special_method(canvas,
                                           canvas_data,
-                                          f"{self.__save_location}\\{self.__mod_name}")
+                                          f"{self.__save_location}\\{self.__mod_name}",
+                                          self.__module_name)
             if special.ending is True:
                 canvas = special.end()
 

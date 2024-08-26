@@ -40,6 +40,8 @@ from PyQt6.QtWidgets import QMainWindow
 import modules.boxArt
 import modules.posterArt
 import modules.magazineArt
+import modules.agentIcons
+import modules.battleIcons
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
         log.info("Box Art")
@@ -56,3 +58,7 @@ class moduleFunctions:
     def agentIcons(main_window: QMainWindow):
         log.info("Agent Icons")
         modules.agentIcons.agentIcons(main_window)
+    
+    def battleIcons(main_window: QMainWindow):
+        log.info("Battle Icons")
+        modules.battleIcons.battleIcons(main_window)

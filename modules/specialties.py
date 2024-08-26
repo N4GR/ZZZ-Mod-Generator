@@ -202,6 +202,47 @@ class Specialties:
 
             return self.icons.INI(agents,
                                   mod_name)
+        
+    class profileIcons():
+        def __init__(self,
+                     canvas: Image.Image,
+                     canvas_data: obj.Canvas,
+                     save_location: str,
+                     module_name: str) -> None:
+            """Profile Icons specialty function called for a special addition to the mod.
+
+            Args:
+                canvas (Image.Image): Canvas made for generating the image.
+                canvas_data (obj.Canvas): Canvas object from obj that contains information about the canvas.
+                save_location (str): Save location of where the user wants to save the mod.
+                module_name (str): Name of the module being called as a function.
+            """
+            self.__canvas = canvas
+            self.__canvas_data = canvas_data
+            self.__save_location = save_location
+            self.__module_name = module_name
+            
+            self.starting = False
+            self.ending = False
+            self.converting = True
+            self.ini = True
+
+            self.icons = Icons(
+                self.__canvas,
+                self.__canvas_data,
+                self.__save_location,
+                self.__module_name
+            )
+
+        def conversion(self) -> list[AgentHash]:
+            return self.icons.conversion()
+        
+        def INI(self,
+                agents: list[AgentHash],
+                mod_name: str):
+
+            return self.icons.INI(agents,
+                                  mod_name)
 
 class Icons:
     def __init__(self,

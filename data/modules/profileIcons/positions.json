@@ -1,0 +1,192 @@
+{
+    "canvas_size": {
+        "height": 1000,
+        "width": 1000
+    },
+    "positions": [
+        {
+            "name": "1",
+            "image_x": 0,
+            "image_y": 0,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "2",
+            "image_x": 200,
+            "image_y": 0,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "3",
+            "image_x": 400,
+            "image_y": 0,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "4",
+            "image_x": 600,
+            "image_y": 0,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "5",
+            "image_x": 800,
+            "image_y": 0,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "6",
+            "image_x": 0,
+            "image_y": 200,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "7",
+            "image_x": 200,
+            "image_y": 200,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "8",
+            "image_x": 400,
+            "image_y": 200,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "9",
+            "image_x": 600,
+            "image_y": 200,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "10",
+            "image_x": 800,
+            "image_y": 200,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "11",
+            "image_x": 0,
+            "image_y": 400,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Corin",
+            "image_x": 200,
+            "image_y": 400,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Billy",
+            "image_x": 400,
+            "image_y": 400,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Anton",
+            "image_x": 600,
+            "image_y": 400,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Ben",
+            "image_x": 800,
+            "image_y": 400,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Soukaku",
+            "image_x": 0,
+            "image_y": 600,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Lucy",
+            "image_x": 200,
+            "image_y": 600,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Piper",
+            "image_x": 400,
+            "image_y": 600,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Nekomata",
+            "image_x": 600,
+            "image_y": 600,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Soldier11",
+            "image_x": 800,
+            "image_y": 600,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Ellen",
+            "image_x": 0,
+            "image_y": 800,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Anby",
+            "image_x": 200,
+            "image_y": 800,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        },
+        {
+            "name": "Nicole",
+            "image_x": 400,
+            "image_y": 800,
+            "image_width": 200,
+            "image_height": 200,
+            "rotation": 0
+        }
+    ]
+}

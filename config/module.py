@@ -42,6 +42,7 @@ import modules.magazineArt
 import modules.agentIcons
 import modules.battleIcons
 import modules.chainIcons
+import modules.profileIcons
 class moduleFunctions:
     def boxArt(main_window: QMainWindow):
         """Box Art module function.
@@ -96,3 +97,12 @@ class moduleFunctions:
         """
         log.info("Chain Icons")
         modules.chainIcons.chainIcons(main_window)
+    
+    def profileIcons(main_window: QMainWindow):
+        """Profile Icons module function.
+
+        Args:
+            main_window (QMainWindow): QMainWindow object generated from the main PyQt6 window.
+        """
+        log.info("Chain Icons")
+        modules.profileIcons.profileIcons(main_window)

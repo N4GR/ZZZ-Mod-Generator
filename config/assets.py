@@ -35,7 +35,7 @@ class button(object):
             Returns:
                 ImageQt: ImageQt object for PyQt6
             """
-            return ImageQt(Image.open(f"{BUTTON_PATH}\\{name}_{type}.png"))
+            return ImageQt(Image.open(resource_path(f"{BUTTON_PATH}\\{name}_{type}.png")))
 
 class panel(object):
     def __init__(self) -> None:
@@ -54,9 +54,9 @@ class panel(object):
         Returns:
             Image.Image: ImageQt object for PyQt6. 
         """
-        return ImageQt(Image.open(f"{PANEL_PATH}\\{name}.png"))
+        return ImageQt(Image.open(resource_path(f"{PANEL_PATH}\\{name}.png")))
 
 class font(object):
     def __init__(self) -> None:
         """Fonts object containing all available fonts."""
-        self.inpin = f"{FONT_PATH}\\inpin.ttf"
+        self.inpin = resource_path(f"{FONT_PATH}\\inpin.ttf")

@@ -1,7 +1,7 @@
 from imports import *
 log = setup("PATHS")
 
-WORKING_DIRECTORY = os.getcwd()
+WORKING_DIRECTORY = resource_path("")
 
 ASSET_PATH = f"{WORKING_DIRECTORY}\\assets"
 

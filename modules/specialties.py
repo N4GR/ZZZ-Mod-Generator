@@ -255,7 +255,7 @@ class Icons:
         self.__save_location = save_location
         self.__module_name = module_name
 
-        self.data_path = f"data\\modules\\{self.__module_name}\\additional"
+        self.data_path = resource_path(f"data\\modules\\{self.__module_name}\\additional")
     
     def conversion(self) -> list[AgentHash]:
         """Conversion function called to interrupt the main convesion - this is used for Icons.

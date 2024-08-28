@@ -19,6 +19,7 @@ import logging
 
 # Local imports
 from config import logger
+from config.resource_path import resource_path
 
 def setup(name: str) -> logging.Logger:
     logging = logger.Logger(name)

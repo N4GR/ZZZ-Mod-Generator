@@ -12,7 +12,7 @@
 > [!WARNING]
 > Modding ZZZ may be against TOS, don't post screenshots with identifiable information using mods in-game.
 
-<div align="center"><img src="https://i.imgur.com/gMg79pz.png" alt="Banner"></div>
+<div align="center"><img src="https://i.imgur.com/ASm2M0h.png" alt="Banner"></div>
 
 # Zenless Zone Zero Mod Generator For 3DMigomoto
 

@@ -38,4 +38,4 @@ It's a lot easier than previous versions - this release offers a singular .exe f
 9. Enjoy!
 
 # License
-[ZZZ Mod Generator](https://github.com/Vamptek/ZZZ-Mod-Generator) © 2024 by [Vamptek](https://github.com/Vamptek) is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0)
+[ZZZ Mod Generator](https://github.com/Vamptek/ZZZ-Mod-Generator) © 2024 by [N4GR](https://n4gr.uk) is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0)
